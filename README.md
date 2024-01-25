@@ -8,7 +8,7 @@ Introduction:
 Visual inspection, defect detection and recall are some of the most complex and expensive tasks for PCB manufacturing companies. Over the years, Printed Circuit Boards have become much smaller and more densely packed with components making the scalability of visual inspection harder. With increased demands from the electronics industry, many defects go unnoticed, which may lead to poor repute and reduced business.  
 
 Project resource:
-In this project, I propose to use deep learning with visual object detection to automatically detect 4-6 defects on a Printed Circuit Board. PCB Dataset is details are elaborated below: 
+In this project, I propose to use deep learning with visual object detection to automatically detect 4-6 defects on a Printed Circuit Board. PCB Dataset details are elaborated below: 
 A public PCB dataset containing 1368 images with 6 kinds of defects (Missing hole; Mouse bite; Open circuit; Short circuit; Spurious copper; Spur) will be used for detection, classification and reporting tasks. This dataset is provided for public use and hosted on Kaggle.com, which is a community for data scientists and ML developers.
 Dataset is located at https://www.kaggle.com/datasets/sudharshann/pcb-defect-dataset
 The dataset hosted on Kaggle is affectively sourced from the Open Lab on Human Robot Interaction of Peking University.
