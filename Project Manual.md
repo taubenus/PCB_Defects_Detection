@@ -14,9 +14,11 @@ Double layer PCB's are widely used in a variety of different electronic sectors 
 
 
 ![layer 1](https://github.com/wfaiza/PCB_Defects_Detection/assets/142170637/37212d01-69d2-40f4-92b2-72090e94370d)
+
 Figure 2 : Double layer PCB with Top layer view
 
 ![layer 2](https://github.com/wfaiza/PCB_Defects_Detection/assets/142170637/31368ae5-c8c2-4933-a6a7-e661a5452a16)
+
 Figure 3 : Double layer PCB with Bottom layer view
 
 ![Designed-Printed-Circuit-Board-PCB-bottom-layer-top-layer](https://github.com/wfaiza/PCB_Defects_Detection/assets/142170637/ebbcecaa-3f87-4b26-92e7-f910058ef4d2)
