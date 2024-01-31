@@ -23,4 +23,11 @@ Optimizing deep learning model for performance
 Configuring project with Streamlit 
 
 
+![componentside-pcb-circuit](https://github.com/wfaiza/PCB_Defects_Detection/assets/142170637/f710a457-7847-4d23-a941-723ecaa23657)
 
+Figure 1 : PCB with Electronic Components
+
+
+![Original vs  Bounded Defects](https://github.com/wfaiza/PCB_Defects_Detection/assets/142170637/75f0fb75-ec73-4943-8812-e9b7de26163d)
+
+Figure 2 : PCB with defects
