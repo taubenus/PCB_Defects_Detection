@@ -5,6 +5,7 @@ A PCB (Printed Circuit Board) consists of the following components.
 Diagram of PCB with image description:
 
 /../main/functional_edits/images/PCB_components.png
+https://github.com/wfaiza/PCB_Defects_Detection/blob/functional_edits/images/PCB_defects.png
 
 Figure 1 : 
 
