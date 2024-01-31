@@ -5,8 +5,9 @@ A PCB (Printed Circuit Board) consists of the following components.
 Diagram of PCB with image description:
 
 /../main/functional_edits/images/PCB_components.png
-https://github.com/wfaiza/PCB_Defects_Detection/blob/functional_edits/images/PCB_defects.png
-
+<picture>
+<source media="(prefers-color-scheme: light)" srcset="https://github.com/wfaiza/PCB_Defects_Detection/blob/functional_edits/images/PCB_defects.png">
+</picture>
 Figure 1 : 
 
 PCB's may be designed as single-layer, double-layer or multi-layer. In this preject we will be dealing with double-layer design with the images in 2 dimension only.
