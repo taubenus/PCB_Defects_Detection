@@ -35,6 +35,6 @@ Configuring project with Streamlit
 Figure 1 : PCB with Electronic Components
 
 
-![Original vs  Bounded Defects](https://github.com/wfaiza/PCB_Defects_Detection/assets/142170637/75f0fb75-ec73-4943-8812-e9b7de26163d)
+![Original vs  Bounded Defects](https://github.com/wfaiza/PCB_Defects_Detection/assets/142170637/8c9b208c-625e-442b-a71d-8a40e04222eb)
 
 Figure 2 : PCB with defects
