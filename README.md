@@ -14,12 +14,19 @@ Dataset is located at https://www.kaggle.com/datasets/sudharshann/pcb-defect-dat
 The dataset hosted on Kaggle is affectively sourced from the Open Lab on Human Robot Interaction of Peking University.
  
 Steps involved in the project: 
+
 Obtaining and verifying the Dataset 
+
 Model training on regression model 
+
 Testing and validating results
+
 Model training CNN deep learning model 
+
 Testing and validating results
+
 Optimizing deep learning model for performance 
+
 Configuring project with Streamlit 
 
 
