@@ -10,12 +10,15 @@ data
 |__Images_bb
 |__Pixel_masks
 
+In order to not push the 'data' subfolder to the remote repo, the working directory should have the file '.gitignore' with the line '/data/'.
+
 The script then does the following:
-1) it copies a random choice of samples of the chosen defect types and respective size into the folder '/data/Images/'
-2) it copies the according annotation xml files into the folder '/data/Annotations/'
-3) it generates a corresponding csv file 'PCB_annotations_dataset.csv' in the working folder with one row for each defect instance, i.e. multiple rows per image
-4) for each image in the dataset it generates an image with the drawn bounding boxes around the defects in the folder '/data/Images_bb/'
-5) for each image in the dataset it generates an a pixel mask (the label) which is white on the defect locations and black otherwise in the folder '/data/Pixel_masks/'
+1) it deletes the contents of the subfolders 'Annotations', 'Images', 'Images_bb' and 'Pixel_masks'
+2) it copies a random choice of samples of the chosen defect types and respective size into the folder '/data/Images/'
+3) it copies the according annotation xml files into the folder '/data/Annotations/'
+4) it generates a corresponding csv file 'PCB_annotations_dataset.csv' in the working folder with one row for each defect instance, i.e. multiple rows per image
+5) for each image in the dataset it generates an image with the drawn bounding boxes around the defects in the folder '/data/Images_bb/'
+6) for each image in the dataset it generates an a pixel mask (the label) which is white on the defect locations and black otherwise in the folder '/data/Pixel_masks/'
 """
 
 import pandas as pd
