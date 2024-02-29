@@ -12,6 +12,26 @@ data
 
 In order to not push the 'data' subfolder to the remote repo, the working directory should have the file '.gitignore' with the line '/data/'.
 
+Furthermore, the parent directory of the working directory should contain the folders:
+
+data_full
+|__Annotations
+|__Images
+
+So the folder structure should look like this, where 'pcb_project' is the folder containing this python file:
+
+pcb_project
+|__data
+|  |__Annotations
+|  |__Images
+|  |__Images_bb
+|  |__Pixel_masks
+|
+data_full
+|__Annotations
+|__Images
+
+
 The script then does the following:
 1) it deletes the contents of the subfolders 'Annotations', 'Images', 'Images_bb' and 'Pixel_masks'
 2) it copies a random choice of samples of the chosen defect types and respective size into the folder '/data/Images/'
