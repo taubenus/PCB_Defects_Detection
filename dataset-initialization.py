@@ -143,7 +143,7 @@ def copy_samples(chosen_defects, chosen_size):
     print(f"Picking from {chosen_defects}")
 
     for defect in pool.keys():
-        rnd_picks = np.random.choice(pool[defect], chosen_size)
+        rnd_picks = np.random.choice(pool[defect], min(len(pool[defect]), chosen_size), replace=False)
         for filename in rnd_picks:
             os.system(f"cp {image_pool_path}{filename} {image_dest_path}")
             os.system(f"cp {annot_pool_path}{filename[:-4]}.xml {annot_dest_path}")
