@@ -1,6 +1,6 @@
 # PCB_Defects_Detection
 This project undertakes the tasks of detecting defects on PCB (Printed Circuit Boards) from a large database of images.
-Dataset location: https://www.kaggle.com/datasets/sudharshann/pcb-defect-dataset
+Dataset location: https://www.kaggle.com/datasets/akhatova/pcb-defects
 
 PCB Defect Detection Using Image Processing and CNN deep learning framework
 
@@ -10,7 +10,7 @@ Visual inspection, defect detection and recall are some of the most complex and 
 Project resource:
 In this project, I propose to use deep learning with visual object detection to automatically detect 4-6 defects on a Printed Circuit Board. PCB Dataset details are elaborated below: 
 A public PCB dataset containing 1368 images with 6 kinds of defects (Missing hole; Mouse bite; Open circuit; Short circuit; Spurious copper; Spur) will be used for detection, classification and reporting tasks. This dataset is provided for public use and hosted on Kaggle.com, which is a community for data scientists and ML developers.
-Dataset is located at https://www.kaggle.com/datasets/sudharshann/pcb-defect-dataset
+Dataset is located at https://www.kaggle.com/datasets/akhatova/pcb-defects
 The dataset hosted on Kaggle is affectively sourced from the Open Lab on Human Robot Interaction of Peking University.
  
 Steps involved in the project: 
