@@ -1,1 +1,5 @@
-
+Refereences:
+https://github.com/Ixiaohuihuihui/Tiny-Defect-Detection-for-PCB
+https://www.sciencedirect.com/science/article/abs/pii/S0957417421010198
+https://www.kaggle.com/datasets/akhatova/pcb-defects/data
+https://machinelearningmastery.com/how-to-perform-object-detection-with-yolov3-in-keras/
