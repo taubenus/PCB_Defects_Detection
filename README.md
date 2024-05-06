@@ -1,7 +1,5 @@
-project_name
+PCB_DEFECTS_DETECTION
 ==============================
-
-pcb test
 
 Project Organization
 ------------
@@ -10,10 +8,10 @@ Project Organization
     ├── Makefile           <- Makefile with commands like `make data` or `make train`
     ├── README.md          <- The top-level README for developers using this project.
     ├── data
-    │   ├── external       <- Data from third party sources.
-    │   ├── interim        <- Intermediate data that has been transformed.
-    │   ├── processed      <- The final, canonical data sets for modeling.
-    │   └── raw            <- The original, immutable data dump.
+    │   ├── Images         <- Image Data.
+    │   ├── Annotations    <- Image Information.
+    │   ├── bbox           <- Defects allocation.
+    │   └── masks          <- True segmentation.
     │
     ├── docs               <- A default Sphinx project; see sphinx-doc.org for details
     │
