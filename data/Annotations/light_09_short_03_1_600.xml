@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?><annotation>
+  <folder>JPEGImages</folder>
+  <filename>light_09_short_03_1_256</filename>
+  <path>F:\PCB\PCB_DATASET_New\VOCPCB_800\_crop_600\JPEGImages\light_09_short_03_1_256.jpg</path>
+  <size>
+    <width>600</width>
+    <height>600</height>
+    <depth>3</depth>
+  </size>
+  <segmented>0</segmented>
+  <object>
+    <name>short</name>
+    <pose>Unspecified</pose>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <bndbox>
+      <xmin>534</xmin>
+      <ymin>419</ymin>
+      <xmax>563</xmax>
+      <ymax>462</ymax>
+    </bndbox>
+  </object>
+</annotation>

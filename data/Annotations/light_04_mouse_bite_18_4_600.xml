@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?><annotation>
+  <folder>JPEGImages</folder>
+  <filename>light_04_mouse_bite_18_4_256</filename>
+  <path>F:\PCB\PCB_DATASET_New\VOCPCB_800\_crop_600\JPEGImages\light_04_mouse_bite_18_4_256.jpg</path>
+  <size>
+    <width>600</width>
+    <height>600</height>
+    <depth>3</depth>
+  </size>
+  <segmented>0</segmented>
+  <object>
+    <name>mouse_bite</name>
+    <pose>Unspecified</pose>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <bndbox>
+      <xmin>95</xmin>
+      <ymin>42</ymin>
+      <xmax>126</xmax>
+      <ymax>66</ymax>
+    </bndbox>
+  </object>
+</annotation>

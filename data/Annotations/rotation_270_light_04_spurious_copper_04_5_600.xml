@@ -1,0 +1,45 @@
+<?xml version="1.0" ?>
+<annotation>
+    <folder>PCB</folder>
+    <filename>rotation_270_light_04_spurious_copper_04_5_600</filename>
+    <source>
+        <database>My Database</database>
+        <annotation>PCB</annotation>
+        <image>flickr</image>
+        <flickrid>NULL</flickrid>
+    </source>
+    <owner>
+        <flickrid>NULL</flickrid>
+        <name>idaneel</name>
+    </owner>
+    <size>
+        <width>601</width>
+        <height>601</height>
+        <depth>3</depth>
+    </size>
+    <segmented>0</segmented>
+    <object>
+        <name>spurious_copper</name>
+        <pose>Unspecified</pose>
+        <truncated>0</truncated>
+        <difficult>0</difficult>
+        <bndbox>
+            <xmin>358</xmin>
+            <ymin>410</ymin>
+            <xmax>386</xmax>
+            <ymax>426</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>spurious_copper</name>
+        <pose>Unspecified</pose>
+        <truncated>0</truncated>
+        <difficult>0</difficult>
+        <bndbox>
+            <xmin>323</xmin>
+            <ymin>62</ymin>
+            <xmax>350</xmax>
+            <ymax>95</ymax>
+        </bndbox>
+    </object>
+</annotation>
