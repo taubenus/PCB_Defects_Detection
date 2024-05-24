@@ -1,0 +1,347 @@
+\documentclass[12pt]{article}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{amsmath}
+\usepackage{blindtext}
+\usepackage{pdfpages}
+\usepackage{xcolor}
+\usepackage{authblk}
+\usepackage{kpfonts} 
+\usepackage{titlesec} 
+\usepackage{titling}
+\usepackage{rotating} 
+\usepackage{geometry}
+\usepackage{hyperref}
+
+% declaring hyperlink appearance
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue, 
+    citecolor=blue, 
+    urlcolor=blue 
+}
+
+% Title formatting
+\titleformat{\section}[block]{\huge\bfseries\centering}{}{0em}{}
+\title{Detection and Classification of Defects on Printed Circuit Boards with Machine Learning\\\phantom{.}}
+
+\date{\today}
+
+% Definition of \maketitle
+\makeatletter
+\def\@maketitle{
+\raggedright
+\vspace*{-30mm}
+\hspace*{-20mm}
+\includegraphics[width=40mm]{./graphics/data_scientest_logo.png}\\[3ex]
+\begin{center}
+{\huge \bfseries \@title}\\[3ex]
+{\large Faiza Waheed}\\[0.5ex]
+{\large \href{mailto:w.faiza@gmx.de}{\textit{\textcolor{blue}{w.faiza@gmx.de}}}}\\
+{\large \href{https://github.com/wfaiza}{\textit{\textcolor{blue}{https://github.com/wfaiza}}}}\\[3ex]
+{\large Niels Hartano}\\[0.5ex]
+{\large \href{mailto:niels@gmx.de}{\textit{\textcolor{blue}{niels@gmx.de}}}}\\
+{\large \href{https://github.com/taubenus}{\textit{\textcolor{blue}{https://github.com/taubenus}}}}\\[3ex]
+{\large Gernot Gellwitz}\\[0.5ex]
+{\large \href{mailto:gernot@gmx.de}{\textit{\textcolor{blue}{gernot@gmx.de}}}}\\
+{\large \href{https://github.com/Kathartikon}{\textit{\textcolor{blue}{https://github.com/Kathartikon}}}}\\[3ex]
+{\large Supervisor: Alban Thuet}\\[0.5ex]
+{\large \href{mailto:alban@datascientest.com}{\textit{\textcolor{blue}{alban@datascientest.com}}}}\\
+{\large \href{https://github.com/lokilone}{\textit{\textcolor{blue}{https://github.com/lokilone}}}}\\[3ex]
+\includegraphics[width=110mm]{./graphics/PCB-Final-Image.jpg}\\[2ex]
+{\large \href{https://github.com/wfaiza/PCB\_Defects\_Detection}{\textit{\textcolor{blue}{https://github.com/wfaiza/PCB\_Defects\_Detection}}}}\\[2ex]
+\@date\\[2ex]
+\end{center}}
+\makeatother
+
+\begin{document}
+
+\thispagestyle{empty}
+\maketitle
+\thispagestyle{empty}
+
+\tableofcontents
+\thispagestyle{empty}
+%Left indentation: \the\leftskip
+%Right indentation: \the\rightskip
+%\setlength{\leftskip}{-1em} 
+%\setlength{\rightskip}{-1em} 
+
+\clearpage
+\newpage
+
+\vspace{2.5cm}
+
+\begin{abstract}
+This report presents a machine learning approach for detecting and classifying defects on printed circuit boards (PCBs). The aim is to enhance the quality control process in PCB manufacturing by leveraging advanced computer vision techniques in observing and identifying various defects.  
+\end{abstract}
+
+\clearpage
+\newpage
+
+\section{Introduction}
+Printed Circuit Boards (PCB's) are essential components in nearly all electronic devices. Ensuring their quality is critical, as defects can lead to device malfunctions or failures. Visual inspection, defect detection and recall are some of the most complex and expensive tasks for PCB manufacturing companies. Over the years, Printed Circuit Boards have become much smaller and more densely packed with components making the scalability of visual inspection harder. Traditional inspection methods, often manual, are time-consuming and prone to human error.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.6\textwidth]{./graphics/defects.png}
+    \caption{Sample defects explored in this project}
+    \label{fig:defects}
+\end{figure}
+
+Machine learning, particularly deep learning, has shown significant promise in automating and improving the accuracy of defect detection and classification in PCB's. By training models on annotated images of PCB's, these systems can learn to identify various types of defects such as solder joint issues, component misalignment, and surface contamination (See Fig.~\ref{fig:defects}.). This quality assurance procedure ensures that the product quality is validated before it is marketed.
+
+This project focuses on two approaches for defect detection and classification: the first approach is based on the VGG16 network, the second is based on a manually designed Convolution Neural Network U-Net model. The former makes use of so-called bounding boxes to detect defects, while the latter uses mask segmentation for detection and classification of defects.
+
+VGG16 can be downloaded as a pre-trained model from the TensorFlow Keras library. Whereas we developed and implemented the U-Net model from scratch. VGG16 therefore can be utilized for transfer learning.
+
+A public PCB dataset containing over 10,000 images with 6 kinds of defects (Missing hole; Mouse bite; Open circuit; Short circuit; Spurious copper; Spur) was used for detection, classification and reporting tasks. This dataset is provided for public use and hosted on Kaggle.com, which is a community for data scientists and ML developers. The dataset is located at:\\ {\href{https://www.kaggle.com/datasets/akhatova/pcb-defects}{\textit{\textcolor{blue}{https://www.kaggle.com/datasets/akhatova/pcb-defects}}}}.
+
+The dataset hosted on Kaggle is effectively sourced from the Open Lab on Human Robot Interaction of Peking University from\\
+\href{https://robotics.pkusz.edu.cn/resources/datasetENG/}{\textit{\textcolor{blue}{https://robotics.pkusz.edu.cn/resources/datasetENG/}}}.\\
+This is a large dataset of more than 10,000 PCB images with a total of around 22,000 annotated defects (classification and bounding box for defects), which we used to train and evaluate our models. The goal was to develop a robust system capable of detecting and classifying defects with high accuracy and efficiency.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\textwidth]{./graphics/4.png}
+    \caption{Sample images from the PCB dataset with annotated defects}
+    \label{fig:sample_pcb_dataset}
+\end{figure}
+
+Some images only contained one defect, while others contained multiple defects (See Fig.~\ref{fig:sample_pcb_dataset}.), but the class of defects for a single image was the same.
+
+Over all, 6 different defects were considered for this project:
+\begin{itemize}
+    \item Mouse Bites
+    \item Missing Holes
+    \item Short circuit
+    \item Spurious Copper
+    \item Spur on trace
+    \item Open Circuits
+\end{itemize}
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/2.png}
+    \caption{Ratio of Number of defects to Number of images for VGG16 model(revisit this image)}
+    \label{fig:ratio_dataset_vgg16}
+\end{figure}
+
+Initially the database seemed balanced, but that was from observing the class labeling for individual images. The defects appeared to be fairly distributed in the dataset, with the most common defect being "Mouse Bites" and the least common defect being "Shorts" (See Fig.~\ref{fig:defect_dist}.).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/1.png}
+    \caption{Defect distribution}
+    \label{fig:defect_dist}
+\end{figure}
+The main objectives were to:
+\begin{itemize}
+    \item Create a data-frame from around 10.000 ".xml" annotation files in a ".csv" format containing the dimensions of the bounding boxes, size of the pictures and the class of defect.
+    \item Pre-process the data which included resizing, sorting, ensuring that feature components were not distorted. 
+    \item Populating the dataset by implementing image augmentations.
+    \item Training machine learning model to detect and classify defects.
+    \item Evaluate the model's performance and optimize it for deployment in a production environment.
+\end{itemize}
+
+\subsection{Pre-processing}
+A high-quality dataset is crucial for training an effective model. Data augmentation is a crucial technique in machine learning, 
+particularly for tasks involving image data, such as object detection and classification of defects on printed circuit boards (PCB's). 
+By artificially expanding the training dataset through transformations like rotations, flips, scaling, and translations, data augmentation 
+helps improve the robustness and generalization ability of the model. This process mitigates over-fitting by exposing the model to a diverse 
+set of variations and scenarios that it might encounter in real-world applications. Consequently, data augmentation enhances the model's 
+ability to accurately detect and classify defects, even when faced with new or slightly altered images, thereby improving its overall 
+performance and reliability in practical deployment.
+Two approaches were considered for data augmentation: Using a library or implementing the augmentations by hand. The former is more convenient and less error-prone, while the latter offers more flexibility and control over the augmentation process. 
+
+\subsubsection{Augmentations via Albumentations}
+
+The library-based approach made use of the library "Albumentations", specifically techniques available like random brightness or contrast, random cropping of the image, rotation, horizontal or vertical flipping, including random sun flares or changing of the hue saturation value (See Fig.~\ref{fig:Albumentations}.).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/5.png}
+    \caption{Possible augmentations by "Albumentations".}
+    \label{fig:Albumentations}
+\end{figure}
+
+Problems that occurred during this process were that the cropping of the images may lead to the loss of the defect, if the defect is located outside of the cropped part of the image, which is not desired.
+In this case the defect would not be detected by the model. Another problem was that in the case of rotation the defects were not correctly placed as can be seen in Fig.~\ref{fig:Albumentations}. This observation is why cropping and rotation were not used in the final VGG16 model.
+
+\subsubsection{Manual Augmentations}
+Let us now discuss the pre-processing that went into preparing the dataset before and after augmentation so that it would not lead to insufficient or inefficient training.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/rgb vs grayscale.png}
+    \caption{Colored vs. Grayscale image}
+    \label{fig:Rgb_gray}
+\end{figure}
+
+Early on after observing the size of images (dim:600x600x3), we decided to crop the images to easily processable dimensions i.e. 100x100. Another decision was to convert the images to gray scale since that would improve computing power immensely while there would be no observable loss in the features of the images.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/croppedimagewithmask.png}
+    \caption{Cropping image and mask to 100x100 dimension}
+    \label{fig:croppedimagewithmask}
+\end{figure}
+
+After observing various issues during the process of implementing augmentation on the dataset, including instances where defects were wholly or partially cropped, masks and labels were incorrectly referenced to the original image, and insufficient control over the type of augmentation, we concluded that it would be beneficial to invest time in implementing manual augmentation. For training a robust and reliable U-Net model, the following augmentation techniques were implemented (See Fig.~\ref{fig:manual_augmentation}.).:
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.8\textwidth]{./graphics/manual augmentation.png}
+    \caption{Manually implemented augmentations}
+    \label{fig:manual_augmentation}
+\end{figure}
+
+\begin{itemize}
+    \item Rotation the image 
+    \item Shifting the image horizontally  
+    \item Shifting the image vertically  
+    \item Shearing the image
+    \item Enlarging or reducing  the image
+    \item Horizontally flipping the image 
+    \item Introducing Gaussian noise to the image
+\end{itemize}
+
+To implement cropping on the dataset, we had to keep in mind that the relevant label/defect class would be properly referenced. In our case, we had to introduce the "none" class to offset the generation of cropped images that had no "defects".
+
+While preprocessing the dataset, we also observed that sometimes the defect would be located in the cropping boundary of the image. If we implemented the cropping without any intervention, the cropped image would not provide a good feature set for the model to train on. Hence we implemented a boundary shifting function which ensured that the defect would not be cropped.
+
+Another observation was that while augmentation, if the defect was located at the boundary of the image, sometimes it would remove the defect from the image after implementing the augmentation technique. Hence we had to implement a check to ensure that the relevant features were not lost. With these checks and balances, we managed to ensure that the dataset for training the model was balance, relevant and not suffering from feature loss.
+As already mentioned, the images in the dataset have single and multiple defects in a single instance (image). Therefore, we had to cater for the cases in which there were multiple defects in a single image so that the model could process the mask and label for the defects accordingly. We brain stormed on how to handle such instances and agreed on removing multiple defects from a single image and separating all defects into single image instances. For this we implemented a defect separation function.
+
+\clearpage
+\newpage
+
+\section{Modelling}
+The methodology of this project involves several key steps: data frame generation and preprocessing, model design and training, and evaluation.
+
+
+\subsection{Model Design and Training}
+
+\subsubsection{VGG16}
+
+The VGG16 model is a convolutional neural network architecture that has been widely used for image classification tasks. It consists of 16 layers, including 13 convolutional layers and 3 fully connected layers. The model has been pre-trained on the ImageNet dataset, which contains millions of images across thousands of classes. By leveraging transfer learning, we can take advantage of the features learned by the model on ImageNet and fine-tune it on our PCB dataset.
+The model was implemented using the TensorFlow and Keras libraries. 
+
+VGG16 requires the following additional preprocessing steps: 
+
+\begin{itemize}
+    \item Resizing images to a 224 by 224 image size to fit the model input requirements. All colors where kept
+    \item Normalizing pixel values to the range [0, 1].  
+\end{itemize}
+
+Furthermore the dimensions of the bounding box where normalized and centered. The defects had to be split up by using a One Hot Encoding. The dataset was then split into a training and a validation set. 
+TensorFlow additionally requires the transformation of the dataset into a tf.data.Dataset object.
+
+Two approaches were tested: freezing (keeping) all pretrained layers and only adding a flatten layer and an detection and an classification head and unfreezing all layers.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.14\textwidth]{./graphics/3.png}
+    \caption{Vgg16 with two heads.}
+\end{figure}
+
+Using two different heads enables the user to use different loss functions and metrics for the detection and classification task. 
+For the detection task the loss function GIoU and metrics One-Hot-IOU was used, while for the classification task the loss function categorical cross-entropy and metrics accuracy were used.
+
+To avoid unnecessary computation, callbacks were implemented such as early stopping and model checkpoint. 
+
+\clearpage
+\newpage
+
+\subsubsection{U-Net}
+For the development and implementation of our machine learning model, we went through many design iterations to finally decide on the RES-UNET model scheme (See Fig.~\ref{fig:resunetmodel}.).
+
+The RES-UNET model provides the combined qualities of a Residual network connection to enhance feature extraction at every stage of the Unet network architecture. With the help of having the Residual connection, the model has ease of learning by removing the vanishing gradient problem along with robust feature extraction. The Unet architecture ensures with the help of skip connection, that the high resolution features, which we need in our case for the defect segmentation task (object detection), are combined from the encoder and decoder to preserve spatial information.
+
+As our task is to classify and detect the defects, we need both segmentation and classification outputs. This model handles both required outputs for a single instance simultaneously. We did entertain the idea of having separate models for obtain the two outputs, but decided to explore this combinatorial model architecture implementation instead.
+
+\newgeometry{left=-3cm, right=-3cm, top=-3cm, bottom=-3cm}
+\begin{figure}[p]
+    \centering
+    \begin{turn}{270}
+    \includegraphics[width=1.2\paperwidth,height=1.2\paperheight,keepaspectratio]{./graphics/model-unet.png}
+    \end{turn}
+    \caption{RES-UNET model with 2 Outputs}
+    \label{fig:resunetmodel}
+\end{figure}
+\restoregeometry
+
+\clearpage
+\newpage
+
+\subsection{Evaluation}
+...
+Graphs : (See Fig.~\ref{fig:graphs}.).
+\newgeometry{left=-3cm, right=-3cm, top=-3cm, bottom=-3cm}
+\begin{figure}[p]
+    \centering
+    \begin{turn}{270}
+    \includegraphics[width=1\paperwidth,height=1\paperheight,keepaspectratio]{./graphics/graphs.png}
+    \end{turn}
+    \caption{Metrics for Res-Unet model}
+    \label{fig:graphs}
+\end{figure}
+\restoregeometry
+
+Confusion matrix : (See Fig.~\ref{fig:confusion}.).
+\newgeometry{left=-3cm, right=-3cm, top=-3cm, bottom=-3cm}
+\begin{figure}[p]
+    \centering
+    \begin{turn}{270}
+    \includegraphics[width=1\paperwidth,height=1\paperheight,keepaspectratio]{./graphics/confusionmatrix.png}
+    \end{turn}
+    \caption{Confusion Matrix for classification output}
+    \label{fig:confusion}
+\end{figure}
+\restoregeometry
+
+
+\clearpage
+\newpage
+
+\section{Conclusion}
+......
+
+\clearpage
+\newpage
+
+\section{Future Work}
+We observed many areas of improvement for future scope of work. 
+\begin{itemize}
+    \item There is potential in doing the machine learning on a computationally powerful computer with GPU. This will help in the context of data-augmentation. At present we had to do a lot of pre-processing to get the small scale images set up for training.
+    \item More metrics can be observed for the current architecture including Dice Coefficient, Precision-Recall Curve, etc.  
+    \item Class of defects were limited for this project. Including wafer cracks, copper detachment, component misalignment or damage, etc for future learning will improve model performance in scenarios with real-life defects.
+    \item 
+\end{itemize}
+\clearpage
+\newpage
+
+\begin{thebibliography}{10} 
+    \bibitem{Smith2021}
+    Smith, J. (2021). Title of the paper. \textit{Journal Name}, \textbf{Volume}(Issue), pages.
+    
+    \bibitem{Ixiaohuihuihui}
+    Ixiaohuihuihui. (2021). Tiny Defect Detection for PCB. GitHub Repository. Available online: \\\url{https://github.com/Ixiaohuihuihui/Tiny-Defect-Detection-for-PCB}.
+    
+    \bibitem{Wang2022}
+    Wang, X., Yang, F., Zhang, X. (2022). A novel self-supervised adversarial learning method for defect detection on printed circuit boards. \textit{Journal of Manufacturing Systems}, \textbf{63}, 340-352. DOI: \url{https://doi.org/10.1016/j.jmsy.2021.09.006}.
+    
+    \bibitem{Akhatova2021}
+    Akhatova, A. (2021). PCB Defects. Kaggle Dataset. Available online: \url{https://www.kaggle.com/datasets/akhatova/pcb-defects/data}.
+    
+    \bibitem{Brownlee2022}
+    Brownlee, J. (2022). How to Perform Object Detection With YOLOv3 in Keras. Machine Learning Mastery. Available online: \url{https://machinelearningmastery.com/how-to-perform-object-detection-with-yolov3-in-keras/}.
+    
+    \bibitem{Zhao2020}
+    Zhao, H., Lin, Z., Fu, Y., et al. (2020). Residual-Attention UNet++: A Nested Residual-Attention U-Net for Medical Image Segmentation. \textit{IEEE Transactions on Neural Networks and Learning Systems}, \textbf{32}(4), 1539-1553. DOI: \url{https://doi.org/10.1109/TNNLS.2020.3011597}.
+    
+\end{thebibliography}
+
+\clearpage
+\newpage
+
+\end{document}
