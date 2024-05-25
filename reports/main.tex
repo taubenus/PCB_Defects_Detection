@@ -7,7 +7,7 @@
 \usepackage{pdfpages}
 \usepackage{xcolor}
 \usepackage{authblk}
-\usepackage{kpfonts} 
+% \usepackage{kpfonts} 
 \usepackage{titlesec} 
 \usepackage{titling}
 \usepackage{rotating} 
@@ -209,8 +209,9 @@ To implement cropping on the dataset, we had to keep in mind that the relevant l
 
 While preprocessing the dataset, we also observed that sometimes the defect would be located in the cropping boundary of the image. If we implemented the cropping without any intervention, the cropped image would not provide a good feature set for the model to train on. Hence we implemented a boundary shifting function which ensured that the defect would not be cropped.
 
-Another observation was that while augmentation, if the defect was located at the boundary of the image, sometimes it would remove the defect from the image after implementing the augmentation technique. Hence we had to implement a check to ensure that the relevant features were not lost. With these checks and balances, we managed to ensure that the dataset for training the model was balance, relevant and not suffering from feature loss.
-As already mentioned, the images in the dataset have single and multiple defects in a single instance (image). Therefore, we had to cater for the cases in which there were multiple defects in a single image so that the model could process the mask and label for the defects accordingly. We brain stormed on how to handle such instances and agreed on removing multiple defects from a single image and separating all defects into single image instances. For this we implemented a defect separation function.
+Another observation was that while augmentation, if the defect was located at the boundary of the image, sometimes it would remove the defect from the image after implementing the augmentation
+technique. Hence we had to implement a check to ensure that the relevant features were not lost. With these checks and balances, we managed to ensure that the dataset for training the model was balanced, relevant and not suffering from feature loss.
+As already mentioned, the images in the dataset have single and multiple defects in a single instance (image). Therefore, we had to cater for the cases in which there were multiple defects in a single image so that the model could process the mask and label for the defects accordingly. We brainstormed on how to handle such instances and agreed on removing multiple defects from a single image and separating all defects into single image instances. For this we implemented a defect separation function.
 
 \clearpage
 \newpage
@@ -333,7 +334,7 @@ We observed many areas of improvement for future scope of work.
     \item There is potential in doing the machine learning on a computationally powerful computer with GPU. This will help in the context of data-augmentation. At present we had to do a lot of pre-processing to get the small scale images set up for training.
     \item More metrics can be observed for the current architecture including Dice Coefficient, Precision-Recall Curve, etc.  
     \item Class of defects were limited for this project. Including wafer cracks, copper detachment, component misalignment or damage, etc for future learning will improve model performance in scenarios with real-life defects.
-    \item 
+    \item The image dataset used in this project is very academical in the sense that the PCBs are plain and have no further components attached to them. In a real world application one is interested in defects on the board especially after the attachment of further components to the PCB. This would greatly increase the variety of possible input imagery including shapes and contours our model has not been trained on. Train the model on real world images from PCBs during or at the end of the production process will enable the model to be used in more practical scenarios.
 \end{itemize}
 \clearpage
 \newpage
