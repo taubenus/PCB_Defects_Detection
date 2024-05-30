@@ -7,6 +7,7 @@
 \usepackage{pdfpages}
 \usepackage{xcolor}
 \usepackage{authblk}
+\usepackage{float}
 % \usepackage{kpfonts} 
 \usepackage{titlesec} 
 \usepackage{titling}
@@ -261,7 +262,7 @@ The RES-UNET model provides the combined qualities of a Residual network connect
 As our task is to classify and detect the defects, we need both segmentation and classification outputs. This model handles both required outputs for a single instance simultaneously. We did entertain the idea of having separate models for obtain the two outputs, but decided to explore this combinatorial model architecture implementation instead.
 
 \newgeometry{left=-3cm, right=-3cm, top=-3cm, bottom=-3cm}
-\begin{figure}[p]
+\begin{figure}[H]
     \centering
     \begin{turn}{270}
     \includegraphics[width=1.2\paperwidth,height=1.2\paperheight,keepaspectratio]{./graphics/model-unet.png}
@@ -272,36 +273,45 @@ As our task is to classify and detect the defects, we need both segmentation and
 \restoregeometry
 
 \clearpage
-\newpage
 
 \subsection{Evaluation}
-...
 Graphs : (See Fig.~\ref{fig:graphs}.).
-\newgeometry{left=-3cm, right=-3cm, top=-3cm, bottom=-3cm}
-\begin{figure}[p]
+%\newgeometry{left=-3cm, right=-3cm, top=-3cm, bottom=-3cm}
+\begin{figure}[H]
     \centering
-    \begin{turn}{270}
-    \includegraphics[width=1\paperwidth,height=1\paperheight,keepaspectratio]{./graphics/graphs.png}
-    \end{turn}
+    %\begin{turn}{270}
+    \includegraphics[width=\textwidth, keepaspectratio]{./graphics/graphs_vertical.png}
+    %\end{turn}
     \caption{Metrics for Res-Unet model}
     \label{fig:graphs}
 \end{figure}
 \restoregeometry
+\clearpage
 
 Confusion matrix : (See Fig.~\ref{fig:confusion}.).
-\newgeometry{left=-3cm, right=-3cm, top=-3cm, bottom=-3cm}
-\begin{figure}[p]
+%\newgeometry{left=-3cm, right=-3cm, top=-3cm, bottom=-3cm}
+\begin{figure}[H]
     \centering
-    \begin{turn}{270}
-    \includegraphics[width=1\paperwidth,height=1\paperheight,keepaspectratio]{./graphics/confusionmatrix.png}
-    \end{turn}
+    %\begin{turn}{270}
+    \includegraphics[width=0.7\textwidth]{./graphics/confusionmatrix.png}
+    %\end{turn}
     \caption{Confusion Matrix for classification output}
     \label{fig:confusion}
 \end{figure}
-\restoregeometry
+%\restoregeometry
 
+The classification report on the 413 items validation set (See Fig.~\ref{fig:classification_report}.).:
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.6\textwidth]{./graphics/classification_report.png}
+    \caption{Classification metrics for Res-Unet model}
+    \label{fig:classification_report}
+\end{figure}
+
+\newpage
 Results:
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{./graphics/output1.png}
     \includegraphics[width=0.8\textwidth]{./graphics/output2.png}
@@ -310,7 +320,7 @@ Results:
     \caption{Validation Results}
     \label{fig:results}
 \end{figure}
-\begin{figure}[h]
+\begin{figure}[H]
     \centering
     \includegraphics[width=0.8\textwidth]{./graphics/output4.png}
     \includegraphics[width=0.8\textwidth]{./graphics/output5.png}
@@ -323,8 +333,10 @@ Results:
 \newpage
 
 \section{Conclusion}
-......
-
+\subsection{RES-UNET architecture}
+The model works very well on our chosen dataset with a segmentation and classification accuracy of about xx\% and yy\%, respectively. While the classic U-NET architecture was sufficient to achieve
+already high metric values in the segmentation, it was not before we combined it with residual blocks in each encoding and decoding step of the UNET (RES-UNET) that the accuracy of the
+classification branch moved to acceptable levels. 
 \clearpage
 \newpage
 
