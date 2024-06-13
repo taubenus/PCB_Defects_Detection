@@ -329,7 +329,7 @@ The size of our validation set is 20\% of the cropped, separated, balanced and u
     \label{fig:val_set}
 \end{figure}
 
-The graphs in Fig.~\ref{fig:graphs_unet} show the development of different metrics during the 26 training epochs. Validation accuracy for segmentation is above 93\% already after the first training epoch and reaching 97\% after the last one. It is not before the 10th epoch that the validation accuracy for classification is reaching 70\%. Same holds for classification precision and recall.
+The graphs in Fig.~\ref{fig:graphs_unet} show the development of different metrics during the 26 training epochs. We used binary crossentropy and categorical crossentropy as loss functions for the segmentation and classification outputs, respectively. The respective activation functions have been sigmoid and softmax. Validation accuracy for segmentation is above 93\% already after the first training epoch and reaching 97\% after the last one. It is not before the 10th epoch that the validation accuracy for classification is reaching 70\%. Same holds for classification precision and recall.
 
 \begin{figure}[H]
     \centering
@@ -350,7 +350,7 @@ The confusion matrix (See Fig.~\ref{fig:confusion_unet}) and the classification 
 
 Confusion matrix : (See Fig.~\ref{fig:confusion_unet}.).
 \newgeometry{left=-3cm, right=-3cm, top=-3cm, bottom=-3cm}
-\begin{figure}[p]
+\begin{figure}[H]
     \centering
     \begin{turn}{270}
     \includegraphics[width=0.7\paperwidth,height=0.7\paperheight,keepaspectratio]{./graphics/confusionmatrix_unet.png}
@@ -452,9 +452,7 @@ Results:
 
 \section{Conclusion}
 \subsection{RES-UNET architecture}
-The model works very well on our chosen dataset with a segmentation and classification accuracy of about xx\% and yy\%, respectively. While the classic U-NET architecture was sufficient to achieve
-already high metric values in the segmentation, it was not before we combined it with residual blocks in each encoding and decoding step of the UNET (RES-UNET) that the accuracy of the
-classification branch moved to acceptable levels. 
+While the classic U-NET architecture was sufficient to achieve already high metric values in the segmentation, it was not before we combined it with residual blocks in each encoding and decoding step of the UNET (RES-UNET) that the accuracy of the classification branch moved to acceptable levels. In fact, the RES-UNET model demonstrated high accuracy in detecting and classifying PCB defects, proving to be a robust solution for PCB defect detection. The combined architecture of Residual Networks and UNET provided the necessary features for precise defect segmentation and classification,  with a segmentation and classification accuracy of about xx\% and yy\%, respectively, on our chosen dataset. This evaluation highlights the successful application of the RES-UNET model, providing a strong foundation for further enhancements and deployment in real-world PCB inspection scenarios.
 
 \subsection{YOLOv5 architecture}
 
