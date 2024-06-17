@@ -194,7 +194,9 @@ Early on after observing the size of images (dim:600x600x3), we decided to crop 
 We observed various issues during the process of implementing on-the-fly augmentation by data generators like ImageDataGenerator on the dataset. We managed to solve some of those like instances where masks and labels were incorrectly referenced to the original image or adaption to our multi output structure (segmentation and classification) or insufficient control over the type of augmentation.  Others were harder to come by because they were intrinsic and needed solutions too complex to be practical. Similar to Albumentations; the  augmentation provided by DataImageGenerator performed rotation and zoom transformations differently on the images and their corresponding masks so that images and masks would not be aligned anymore after augmentation, or defects that were wholly or partially cropped by shift transformations. Considering all this we concluded that it would be beneficial to invest time in implementing manual augmentation for the cost of having to save all the augmented dataset to disk. For training a robust and reliable U-Net model, the following augmentation techniques were implemented (See Fig.~\ref{fig:manual_augmentation}.).:
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.8\textwidth]{./graphics/manual augmentation.png}
+    \begin{turn}{270}
+    \includegraphics[width=1\textwidth]{./graphics/manual augmentation.png}
+    \end{turn}
     \caption{Manually implemented augmentations}
     \label{fig:manual_augmentation}
 \end{figure}
@@ -367,24 +369,23 @@ Confusion matrix : (See Fig.~\ref{fig:confusion_unet}.).
 \newgeometry{left=-3cm, right=-3cm, top=-3cm, bottom=-3cm}
 \begin{figure}[p]
     \centering
-    %\begin{turn}{270}
-    \includegraphics[width=0.7\paperwidth,height=0.7\paperheight,keepaspectratio]{./graphics/confusionmatrix_unet.png}
-    %\end{turn}
+    \begin{turn}{270}  \includegraphics[width=0.7\paperwidth,height=0.7\paperheight,keepaspectratio]{./graphics/confusionmatrix_unet.png}
+    \end{turn}
     \caption{Confusion Matrix for classification output}
     \label{fig:confusion_unet}
 \end{figure}
 \restoregeometry
-
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\textwidth]{./graphics/classification_report_unet.png}
+    \includegraphics[width=0.7\textwidth]{./graphics/classification_report_unet.png}
     \caption{Classification metrics for classification output}
     \label{fig:classification_report_unet}
 \end{figure}
 
-%\clearpage
+\clearpage
 %\newpage
 
+\subsubsection{U-net model Results}
 Fig.~\ref{fig:results1_unet} and Fig.~\ref{fig:results2_unet} illustrate that the location of the defects or the pixel matrix is predicted quite precisely. For clarification the real and predicted classes are shown.
 															  
 \begin{figure}[h]
@@ -425,11 +426,14 @@ Graphs for YOLOv5 model : (See Fig.~\ref{fig:graphs_yolo}.).
 \restoregeometry
 
 \clearpage
-\newpage
+%\newpage
 
 Confusion matrix : (See Fig.~\ref{fig:confusion_yolo}.).
 \begin{figure}[H]
-    \centering\includegraphics[width=0.7\paperwidth,height=0.7\paperheight,keepaspectratio]{./graphics/confusion_matrix_yolo.png}
+    \centering
+    \begin{turn}{270}
+    \includegraphics[width=0.7\paperwidth,height=0.7\paperheight,keepaspectratio]{./graphics/confusion_matrix_yolo.png}
+    \end{turn}
     \caption{Confusion Matrix for classification output}
     \label{fig:confusion_yolo}
 \end{figure}
@@ -445,7 +449,8 @@ Confusion matrix : (See Fig.~\ref{fig:confusion_yolo}.).
 
 \clearpage
 
-Results:
+\subsubsection{YOLOv5 model Results}
+The results for prediction on validation data can be seen in the following figures. The results are very accurate, but there are still undetected defects e.g. in Fig.~\ref{fig:results1_yolo}, the open circuit image has 2 defects whereas only one was detected.
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{./graphics/results1_yolo.png}
