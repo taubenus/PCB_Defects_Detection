@@ -520,7 +520,6 @@ We observed many areas of improvement for future scope of work.
     \item For training the Res-UNet model, the augmented training and testing datasets were initially loaded into memory as arrays, consuming a considerable amount of RAM. To optimize RAM utilization, an alternative approach involved saving the images to the hard disk and subsequently loading them in batches during training. This strategy effectively mitigated RAM usage, thereby enabling the model to make more efficient use of available memory resources.
     \item Class of defects were limited for this project. Including wafer cracks, copper detachment, component misalignment or damage, etc for future learning will improve model performance in scenarios with real-life defects.
     \item The image dataset used in this project is very academical in the sense that the PCBs are plain and have no further components attached to them. In a real world application one is interested in defects on the board especially after the attachment of further components to the PCB. This would greatly increase the variety of possible input imagery including shapes and contours our model has not been trained on. Train the model on real world images from PCBs during or at the end of the production process will enable the model to be used in more practical scenarios.
-
 \end{itemize}
 \clearpage
 \newpage
