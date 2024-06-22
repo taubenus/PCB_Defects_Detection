@@ -338,13 +338,13 @@ In the current iteration of our training, we used the default Confidence and IoU
 
 \subsection{Evaluation}
 
-The performance of the models was evaluated using accuracy, MeanIoU, precision, recall, and F1-score metrics. The VGG16 model unfortunately could not achieve any results but for the YOLOv5 model we achieved a classification accuracy of ~95\%, while with the U-Net model, we achieved a classification accuracy of >95\%. 
+The performance of the models was evaluated using accuracy, MeanIoU, precision, recall, and F1-score metrics. The VGG16 model unfortunately could not achieve any results but for the YOLOv5 and the RES-UNET model we achieved a classification accuracy of ~95\%.
 
-Despite the high accuracy, both models faced challenges in detecting certain defects. The U-Net model struggled with detecting small defects, while the YOLOv5 model had difficulty distinguishing between similar defect types. The results are discussed in detail below.
+Despite the high accuracy, both models faced challenges in detecting certain defects. The RES-UNET model struggled with detecting small defects, while the YOLOv5 model had difficulty distinguishing between similar defect types. The results are discussed in detail below.
 
 \subsubsection{RES-UNET}
 
-The size of our validation set is 20\% of the cropped, separated, balanced and pre-augmented original training set. This means there are around 400 validation samples. The evaluation metrics are based on these samples. The defect ratios can be seen in Fig.~\ref{fig:val_set}.
+The {\bf size of our validation} set is 20\% of the cropped, separated, balanced and pre-augmented original training set. This means there are 413 validation samples. The evaluation metrics are based on these samples. The defect ratios can be seen in Fig.~\ref{fig:val_set}.
 \begin{figure}[H]
     \begin{center}
         \begin{tabular}{|c|c|}
@@ -365,42 +365,42 @@ The size of our validation set is 20\% of the cropped, separated, balanced and p
     \label{fig:val_set}
 \end{figure}
 
-The graphs in Fig.~\ref{fig:graphs_unet} show the development of different metrics during the final training epochs. We used Binary-Cross-Entropy and Categorical-Cross-Entropy as loss functions for the segmentation and classification outputs, respectively. The respective activation functions have been Sigmoid (binary) and Softmax (multi-class). Validation accuracy for segmentation is above 93\% already after the first training (20 epochs with loss weights 80/20 seg/class) and reaching 97\% after the final training (20 epochs with loss weights inverted i.e. 20/80 seg/class). It is not before the 10th epoch that the validation accuracy for classification is reaching 70\%. Same holds for classification precision and recall.
+The graphs in Fig.~\ref{fig:unet_training_history} show the development of {\bf key metrics during the training} epochs. We used Binary-Cross-Entropy and Categorical-Cross-Entropy as loss functions for the segmentation and classification outputs, respectively. The respective activation functions have been Sigmoid (binary) and Softmax (multi-class). Validation accuracy for segmentation is at 98.0\% after the training with 14 epochs with loss weights 80/20 seg/class.
+%Validation accuracy for segmentation is above 93\% already after the first training (20 epochs with loss weights 80/20 seg/class) and reaching 97\% after the final training (20 epochs with loss weights inverted i.e. 20/80 seg/class). It is not before the 10th epoch that the validation accuracy for classification is reaching 70\%. Same holds for classification precision and recall.
 
+We can observe some encouraging results from the validation of the RES-UNET model. The metrics' graphs show improvement still which indicates that the model will improve with training over more epochs. 
 
 \begin{figure}[H]
     \centering
     %\begin{turn}{270}
-    \includegraphics[width=\textwidth, keepaspectratio]{./graphics/graphs_vertical.png}
+    \includegraphics[width=\textwidth, keepaspectratio]{./graphics/RESUNET_training-history_v240618_1.png}
     %\end{turn}
     \caption{Metrics for RES-UNET model}
-    \label{fig:graphs_unet}
+    \label{fig:unet_training_history}
 \end{figure}
 \restoregeometry
 \clearpage
 
+The {\bf classification report} (See Fig.~\ref{fig:unet_classification_report}.) and the {\bf confusion matrix} (See Fig.~\ref{fig:unet_confusion}) on the validation set show that precision and recall for each defect class vary but they are generally stable. 100\% of the short circuit detections on the test set are correct, while still 15\% of the detected "none" class are erroneously detected as different class all over the remaining classes. Likewise, 98\% of the missing holes are correctly identified, while 8\% of the "none" and "spur" class are not being detected. Hence we can observe that the defect classes of "none", "spur" and " mouse bites" are the most difficult to detect accurately. Especially the 'none' class should have a high precision whereas a suboptimal recall on that class is more tolerable. We are interested in finding the defects on the PCBs, so one would need to have as few wrongly detected 'none' classes as possible. Meanwhile a wrongly classified real 'none' class is just 'false alarm'.
 
-We can observe some encouraging results from the validation of the U-net model. The metrics' graphs show improvement still which indicates that the model will improve with training over more epochs. 
-Graphs for U-net model : (See Fig.~\ref{fig:graphs_unet}.).
+\bigskip
 
-The confusion matrix (See Fig.~\ref{fig:confusion_unet}) and the classification report (See Fig.~\ref{fig:classification_report_unet}.) on the validation set show that precision and recall for each defect class vary but they are generally stable. 98\% of the short circuit detections on the test set are correct, while 24\% of the detected "spur" belong to a different class. Likewise, 98\% of the missing holes are correctly identified, while 20\% of the "none", "mouse-bite" and "spurious-copper" class are erroneously detected as "spur" or incorrectly detected. Hence we can observe that the defect classes of "spurious copper", "spur" and " mouse bites" are the most difficult to detect accurately. 
-
-Confusion matrix : (See Fig.~\ref{fig:confusion_unet}.).
-\newgeometry{left=-3cm, right=-3cm, top=-3cm, bottom=-3cm}
-\begin{figure}[p]
-    \centering
-    \begin{turn}{270}  \includegraphics[width=0.7\paperwidth,height=0.7\paperheight,keepaspectratio]{./graphics/confusionmatrix_unet.png}
-    \end{turn}
-    \caption{Confusion Matrix for classification output}
-    \label{fig:confusion_unet}
-\end{figure}
-\restoregeometry
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{./graphics/classification_report_unet.png}
+    \includegraphics[width=\textwidth]{./graphics/RESUNET_classification_report_graphical_v240618_1.png}
     \caption{Classification metrics for classification output}
-    \label{fig:classification_report_unet}
+    \label{fig:unet_classification_report}
 \end{figure}
+
+%\newgeometry{left=-3cm, right=-3cm, top=-3cm, bottom=-3cm}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\paperwidth,height=0.7\paperheight,keepaspectratio]{./graphics/RESUNET_confusion_matrix_v240618_1.png}
+    \caption{Confusion Matrix for classification output}
+    \label{fig:unet_confusion}
+\end{figure}
+\restoregeometry
+
 
 \clearpage
 %\newpage
