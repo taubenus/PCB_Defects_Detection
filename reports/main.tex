@@ -240,9 +240,9 @@ As already mentioned, the images in the dataset have single and multiple defects
 \newpage
 
 \section{Modelling}
-The methodology of this project involves several key steps: data set generation and preprocessing, model design and training, and evaluation. As discussed above; the dataset generation and preprocessing was handled manually. Now we will discuss the design and training of the various image processing models.
+The methodology of this project involves several key steps: data set generation and preprocessing, model design and training, and evaluation. As discussed above; the dataset generation and preprocessing was handled with the help of "Albumentations" and manually. Now we will discuss the architecture design and modelling of the various image processing models.
 
-\subsection{Model Design and Training}
+\subsection{Model Design}
 
 \subsubsection{VGG16}
 
@@ -336,13 +336,13 @@ In the current iteration of our training, we used the default Confidence and IoU
 \clearpage
 \newpage
 
-\subsection{Evaluation}
+\section{Evaluation}
 
 The performance of the models was evaluated using accuracy, MeanIoU, precision, recall, and F1-score metrics. The VGG16 model unfortunately could not achieve any results but for the YOLOv5 and the RES-UNET model we achieved a classification accuracy of ~95\%.
 
 Despite the high accuracy, both models faced challenges in detecting certain defects. The RES-UNET model struggled with detecting small defects, while the YOLOv5 model had difficulty distinguishing between similar defect types. The results are discussed in detail below.
 
-\subsubsection{RES-UNET}
+\subsection{RES-UNET}
 
 The {\bf size of our validation} set is 20\% of the cropped, separated, balanced and pre-augmented original training set. This means there are 413 validation samples. The evaluation metrics are based on these samples. The defect ratios can be seen in Fig.~\ref{fig:val_set}.
 \begin{figure}[H]
@@ -443,7 +443,7 @@ Fig.~\ref{fig:finalpred1_unet} presents the final representation of the results 
 \clearpage
 \newpage
 
-\subsubsection{YOLOv5}
+\subsection{YOLOv5}
 The model was trained for 50 epochs and it can be observed from the resulting graphs that the training is still improving hence for further tests we can train the model over more epochs, though by observing the fluctuations in the validation loss, we can argue that model might be moving towards over fitting. The results are observably accurate already with just "Mouse-bite" and "Spur" type of defect giving issues to the model. The "Missing-hole" defect is the easiest for the model to detect, compounding the observation from the U-net model results which also performed the best for this type of defect.
 The model was trained on pretrained weights for YOLOv5s since this is a small to medium size dataset. In future, training with fine tuning self-initialized weights can improve the results especially in case of over fitting.
 
@@ -563,7 +563,7 @@ We observed many areas of improvement for future scope of work.
 \end{itemize}
 \clearpage
 \newpage
-
+\addcontentsline{toc}{section}{References}
 \begin{thebibliography}{10} 
     \bibitem{wevolver_pcb_inspection}
     Wevolver. (2023). \textit{Mastering PCB Testing: Techniques, Methods, and Best Practices Unveiled}. Retrieved June 18, 2024, from \url{https://www.wevolver.com/article/pcb-inspection}
@@ -627,7 +627,7 @@ We observed many areas of improvement for future scope of work.
 \clearpage
 \newpage
 
-\addcontentsline{toc}{chapter}{List of Figures}
+\addcontentsline{toc}{section}{List of Figures}
 \listoffigures
 
 \clearpage
