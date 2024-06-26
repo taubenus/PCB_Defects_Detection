@@ -1,6 +1,39 @@
-Refereences:
-https://github.com/Ixiaohuihuihui/Tiny-Defect-Detection-for-PCB
-https://www.sciencedirect.com/science/article/abs/pii/S0957417421010198
-https://www.kaggle.com/datasets/akhatova/pcb-defects/data
-https://machinelearningmastery.com/how-to-perform-object-detection-with-yolov3-in-keras/
-Title: Residual-Attention UNet++: A Nested Residual-Attention U-Net for Medical Image Segmentation
+References:
+
+[1] Wevolver. (2023). Mastering PCB Testing: Techniques, Methods, and Best Practices Unveiled. Retrieved June 18, 2024, from https://www.wevolver.com/article/pcb-inspection
+
+[2] TensorFlow. (n.d.). Transfer learning and fine-tuning. Retrieved June 17, 2024, from https://www.tensorflow.org/tutorials/images/transfer_learning
+
+[3] Ashutosh Shekar. (n.d.). VGG16. Retrieved June 17, 2024, from https://github.com/ashushekar/VGG16
+
+[4] Heaton, Jeff. (n.d.). VGG16 and ImageNet. Retrieved June 17, 2024, from https://conx.readthedocs.io/en/latest/VGG16%20and%20ImageNet.html
+
+[5] Ultralytics. (n.d.). YOLOv5. Retrieved June 20, 2024, from https://github.com/ultralytics/yolov5
+
+[6] Ashraf, H., Waris, M., Ghafoor, M., Gilani, S., & Niazi, I. (2022, March). Melanoma Segmentation using Deep Learning with Test-Time Augmentations and Conditional Random Fields. Scientific Reports. Retrieved June 20, 2024, from https://doi.org/10.1038/s41598-022-07885-y
+
+[7] Cubuk, E. D., Zoph, B., Mane, D., Vasudevan, V., & Le, Q. V. (2020, June). AutoAugment: Learning Augmentation Policies from Data. In Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR) (pp. 113-123). Retrieved June 20, 2024, from https://openaccess.thecvf.com/content_CVPR_2020/html/Cubuk_AutoAugment_Learning_Augmentation_Policies_From_Data_CVPR_2020_paper.html
+
+[8] Albumentations. (n.d.). Getting Started with Image Augmentation. Retrieved June 20, 2024, from https://albumentations.ai/docs/getting_started/image_augmentation/
+
+[9] Saponara, S., & Elhanashi, A. E. (2022). Impact of Image Resizing on Deep Learning Detectors for Training Time and Model Performance. In Applications in Electronics Pervading Industry, Environment and Society (pp. 10-17). Springer. doi:10.1007/978-3-030-95498-7_2. Retrieved June 20, 2024, from https://doi.org/10.1007/978-3-030-95498-7_2
+
+[10] TensorFlow. (n.d.). tf.keras.preprocessing.image.ImageDataGenerator. Retrieved June 20, 2024, from https://www.tensorflow.org/api_docs/python/tf/keras/preprocessing/image/ImageDataGenerator
+
+[11] Keras. (n.d.). Keras API Documentation. Retrieved June 20, 2024, from https://keras.io/api/
+
+[12] Ixiaohuihuihui. (2021). Tiny Defect Detection for PCB. GitHub Repository. Available online: https://github.com/Ixiaohuihuihui/Tiny-Defect-Detection-for-PCB
+
+[13] Wang, X., Yang, F., Zhang, X. (2022). A novel self-supervised adversarial learning method for defect detection on printed circuit boards. Journal of Manufacturing Systems, 63, 340-352. DOI: https://doi.org/10.1016/j.jmsy.2021.09.006
+
+[14] Akhatova, A. (2021). PCB Defects. Kaggle Dataset. Available online: https://www.kaggle.com/datasets/akhatova/pcb-defects/data
+
+[15] Brownlee, J. (2022). How to Perform Object Detection With YOLOv3 in Keras. Machine Learning Mastery. Available online: https://machinelearningmastery.com/how-to-perform-object-detection-with-yolov3-in-keras/
+
+[16] Zhao, H., Lin, Z., Fu, Y., et al. (2020). Residual-Attention UNet++: A Nested Residual-Attention U-Net for Medical Image Segmentation. IEEE Transactions on Neural Networks and Learning Systems, 32(4), 1539-1553. DOI: https://doi.org/10.1109/TNNLS.2020.3011597
+
+[17] Kim, M., Jeong, J., Kim, S. (2021). ECAP-YOLO: Efficient Channel Attention Pyramid YOLO for Small Object Detection in Aerial Image. Remote Sensing, 13(11), 4851. DOI: https://doi.org/10.3390/rs13234851
+
+[18] Jacob Gildenblat, ”Advanced AI Explainability with PyTorch-GradCAM,” 2024. [Online]. Available: https://jacobgil.github.io/pytorch-gradcam-book/
+
+[19] TensorFlow. (n.d.). tf.keras.losses. Retrieved June 17, 2024, from https://www.tensorflow.org/api_docs/python/tf/keras/losses
