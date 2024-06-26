@@ -190,7 +190,7 @@ In this case the defect would not be detected by the model. Another problem was 
 \subsubsection{Manual Augmentations}
 Let us now discuss the pre-processing that went into preparing the dataset before and after augmentation so that it would not lead to insufficient or inefficient training.
 
-A major decision was to convert the images to gray scale since that would improve computing power immensely while there would be no observable loss in the features of the image s\cite{Saponara2022} (See Fig.~\ref{fig:Rgb_gray}.).
+A major decision was to convert the images to gray scale since that would improve computing power immensely while there would be no observable loss in the features of the images\cite{Saponara2022} (See Fig.~\ref{fig:Rgb_gray}.).
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{./graphics/rgb vs grayscale.png}
@@ -207,7 +207,7 @@ Another decision made early on after observing the size of images (dim:600x600),
     \label{fig:croppedimagewithmask}
 \end{figure}
 \clearpage
-We observed various issues during the process of implementing on-the-fly augmentation by data generators like ImageDataGenerator\cite{TensorFlowImageDataGenerator} on the dataset. We managed to solve some of those issues; like instances where masks and labels were incorrectly referenced to the original image or adaption to our multi-output structure (segmentation and classification) or insufficient control over the type of augmentation. Others were harder to come by because they were intrinsic and needed solutions too complex to be practical. Similar to Albumentations; the  augmentation provided by ImageDataGenerator performed rotation and zoom transformations differently on the images and their corresponding masks so that images and masks would not be aligned anymore after augmentation, or defects that were wholly or partially cropped by shift transformations. Considering all this we concluded that it would be beneficial to invest time in implementing manual augmentation for the cost of having to save all the augmented dataset to disk. For training a robust and reliable model, the following augmentation techniques were implemented (See Fig.~\ref{fig:manual_augmentation}.).:
+We observed various issues during the process of implementing on-the-fly augmentation by data generators like ImageDataGenerator\cite{TensorFlowImageDataGenerator} on the dataset. We managed to solve some of those issues; like instances where masks and labels were incorrectly referenced to the original image or adaption to our multi-output structure (segmentation and classification) or insufficient control over the type of augmentation. Others were harder to overcome because they were intrinsic and needed solutions too complex to be practical. Similar to Albumentations; the  augmentation provided by ImageDataGenerator performed rotation and zoom transformations differently on the images and their corresponding masks so that images and masks would not be aligned anymore after augmentation, or defects that were wholly or partially cropped by shift transformations. Considering all this we concluded that it would be beneficial to invest time in implementing manual augmentation for the cost of having to save all the augmented dataset to disk. For training a robust and reliable model, the following augmentation techniques were implemented (See Fig.~\ref{fig:manual_augmentation}.).:
 
 \begin{figure}[h]
     \centering
@@ -281,7 +281,7 @@ Unfortunately, the input for VGG16 can only handle single bounding boxes per ins
 \subsubsection{RES-UNET}
 For the development and implementation of our machine learning model, we went through many design iterations to finally decide on the RES-UNET model scheme (See Fig.~\ref{fig:resunetmodel}.).
 
-The RES-UNET model provides the combined qualities of a Residual network connection to enhance feature extraction at every stage of the Unet network architecture. With the help of having the Residual connection, the model has ease of learning by removing the vanishing gradient problem along with robust feature extraction. The U-net architecture ensures with the help of skip connection, that the high resolution features, which we need in our case for the defect segmentation task (object detection), are combined from the encoder and decoder to preserve spatial information.
+The RES-UNET model provides the combined qualities of a Residual network connection to enhance feature extraction at every stage of the Unet network architecture. With the help of having the Residual connection, the model has ease of learning by removing the vanishing gradient problem along with robust feature extraction\cite{Zhao2020}. The U-net architecture ensures with the help of skip connection, that the high resolution features, which we need in our case for the defect segmentation task (object detection), are combined from the encoder and decoder to preserve spatial information.
 
 As our task is to classify and detect the defects, we need both segmentation and classification outputs. This model handles both required outputs for a single instance simultaneously. We did entertain the idea of having separate models for obtain the two outputs, but decided to explore this combinatorial model architecture implementation instead.
 
@@ -391,15 +391,22 @@ The {\bf classification report} (See Fig.~\ref{fig:unet_classification_report}.)
     \caption{Classification metrics for classification output}
     \label{fig:unet_classification_report}
 \end{figure}
-
+						
+						
 %\newgeometry{left=-3cm, right=-3cm, top=-3cm, bottom=-3cm}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\paperwidth,height=0.7\paperheight,keepaspectratio]{./graphics/RESUNET_confusion_matrix_v240618_1.png}
-    \caption{Confusion Matrix for classification output}
+    
+	\caption{Confusion Matrix for classification output}
     \label{fig:unet_confusion}
 \end{figure}
 \restoregeometry
+
+
+
+
+
 
 
 \clearpage
@@ -504,8 +511,8 @@ The results for prediction on validation data can be seen in the following figur
 \newpage
 
 \subsection{Model Interpretability}
-Model interpretability is crucial for understanding the decisions made by deep learning models, especially in complex tasks like image segmentation and classification. 
-Since our project was a comprehensive image detection project(segmentation and classification); we had to implement an approach for understanding the behavior and decision-making process of the deep learning model. Implementing such behavioural interpretation can help understand the strengths and weaknesses of the model and guide us in improving its trustworthiness and reliability.
+Model interpretability is crucial for understanding the decisions made by deep learning models, especially in complex tasks like image segmentation and classification \cite{Gildenblat2024}. 
+Since our project was a comprehensive image detection project (segmentation and classification); we implemented an approach for understanding the behavior and decision-making process of the deep learning model. Implementing such behavioural interpretation can help understand the strengths and weaknesses of the model and guide us in improving its trustworthiness and reliability \cite{Gildenblat2024}.
 
 \subsubsection{Grad-Cam}
 
@@ -545,6 +552,7 @@ Hence we can conclude that the model works very well on our chosen dataset.
 
 \subsection{YOLOv5 architecture}
 The YOLOv5 model, with its high accuracy and efficiency, shows promise for efficient defect detection. Future work may focus on enhancing the models' performance by incorporating fine tuning training weights, improving data augmentation techniques, and exploring other advanced interpretability techniques.
+The model fulfills its purpose by providing a baseline for us to test against our designed model performance.
 
 \clearpage
 \newpage
@@ -584,7 +592,7 @@ We observed many areas of improvement for future scope of work.
     Ashraf, H., Waris, M., Ghafoor, M., Gilani, S., \& Niazi, I. (2022, March). Melanoma Segmentation using Deep Learning with Test-Time Augmentations and Conditional Random Fields. \textit{Scientific Reports}. Retrieved June 20, 2024, from \url{https://doi.org/10.1038/s41598-022-07885-y}
 
     \bibitem{Cubuk2020AutoAugment}
-    Cubuk, E. D., Zoph, B., Mane, D., Vasudevan, V., \& Le, Q. V. (2020, June). AutoAugment: Learning Augmentation Policies from Data. In \textit{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)} (pp. 113-123). Retrieved June 20, 2024, from \url{https://openaccess.thecvf.com/content_CVPR_2020/html/Cubuk_AutoAugment_Learning_Augmentation_Policies_From_Data_CVPR_2020_paper.html}
+    Cubuk, E. D., Zoph, B., Mane, D., Vasudevan, V., \& Le, Q. V. (2020, June). AutoAugment: Learning Augmentation Policies from Data. In \textit{Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)} (pp. 113-123). Retrieved June 20, 2024, from \url{https://doi.org/10.48550/arXiv.1805.09501}
 
     \bibitem{AlbumentationsDocs}
     Albumentations. (n.d.). \textit{Getting Started with Image Augmentation}. Retrieved June 20, 2024, from \url{https://albumentations.ai/docs/getting_started/image_augmentation/}
@@ -602,7 +610,7 @@ We observed many areas of improvement for future scope of work.
     Ixiaohuihuihui. (2021). Tiny Defect Detection for PCB. GitHub Repository. Available online: \\\url{https://github.com/Ixiaohuihuihui/Tiny-Defect-Detection-for-PCB}.
     
     \bibitem{Wang2022}
-    Wang, X., Yang, F., Zhang, X. (2022). A novel self-supervised adversarial learning method for defect detection on printed circuit boards. \textit{Journal of Manufacturing Systems}, \textbf{63}, 340-352. DOI: \url{https://doi.org/10.1016/j.jmsy.2021.09.006}.
+    Wang, X., Yang, F., Zhang, X. (2022). A novel self-supervised adversarial learning method for defect detection on printed circuit boards. \textit{Journal of Manufacturing Systems}, \textbf{63}, 340-352. DOI: \url{https://doi.org/10.1049/joe.2019.1181}.
     
     \bibitem{Akhatova2021}
     Akhatova, A. (2021). PCB Defects. Kaggle Dataset. Available online: \url{https://www.kaggle.com/datasets/akhatova/pcb-defects/data}.
@@ -611,7 +619,7 @@ We observed many areas of improvement for future scope of work.
     Brownlee, J. (2022). How to Perform Object Detection With YOLOv3 in Keras. Machine Learning Mastery. Available online: \url{https://machinelearningmastery.com/how-to-perform-object-detection-with-yolov3-in-keras/}.
     
     \bibitem{Zhao2020}
-    Zhao, H., Lin, Z., Fu, Y., et al. (2020). Residual-Attention UNet++: A Nested Residual-Attention U-Net for Medical Image Segmentation. \textit{IEEE Transactions on Neural Networks and Learning Systems}, \textbf{32}(4), 1539-1553. DOI: \url{https://doi.org/10.1109/TNNLS.2020.3011597}.
+    Zhao, H., Lin, Z., Fu, Y., et al. (2020). Residual-Attention UNet++: A Nested Residual-Attention U-Net for Medical Image Segmentation. \textit{IEEE Transactions on Neural Networks and Learning Systems}, \textbf{32}(4), 1539-1553. DOI: \url{https://doi.org/10.3390/app12147149}.
 
     \bibitem{Kim2021}
     Kim, M., Jeong, J., Kim, S. (2021). ECAP-YOLO: Efficient Channel Attention Pyramid YOLO for Small Object Detection in Aerial Image. \textit{Remote Sensing}, \textbf{13}(11), 4851. DOI: \url{https://doi.org/10.3390/rs13234851}.
@@ -621,7 +629,7 @@ We observed many areas of improvement for future scope of work.
 
     \bibitem{TensorFlowAPI}
     TensorFlow. (n.d.). \textit{tf.keras.losses}. Retrieved June 17, 2024, from \url{https://www.tensorflow.org/api_docs/python/tf/keras/losses}
-       
+
 \end{thebibliography}
 
 \clearpage
