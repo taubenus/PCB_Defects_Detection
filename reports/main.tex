@@ -76,7 +76,7 @@
 \vspace{2.5cm}
 
 \begin{abstract}
-This report explores various machine learning methodologies for detecting and classifying defects on printed circuit boards (PCBs) using advanced computer vision techniques. Traditional manual inspection methods are time-consuming and error-prone, motivating the adoption of deep learning models such as VGG16\cite{VGG16GitHub}, RES-UNET\cite{Ashraf2022}, and YOLOv5\cite{YOLOv5GitHub} for automated defect detection.
+This report explores various machine learning methodologies for detecting and classifying defects on printed circuit boards (PCBs), using advanced computer vision techniques. Traditional manual inspection methods are time-consuming and error-prone, motivating the adoption of deep learning models such as VGG16 \cite{VGG16GitHub}, RES-UNET \cite{Ashraf2022}, and YOLOv5 \cite{YOLOv5GitHub} for automated defect detection.
 
 The aim is to enhance the quality control process in PCB manufacturing by leveraging advanced computer vision techniques to observe and identify defects. The study utilizes a large dataset of over 10,000 annotated PCB images, encompassing various defects. Rigorous preprocessing, including data augmentation and model training, demonstrates promising results in each architecture's performance.
 
@@ -167,15 +167,15 @@ The main objectives were to:
 A high-quality dataset is crucial for training an effective model. Data augmentation is a crucial technique in machine learning, 
 particularly for tasks involving image data, such as object detection and classification of defects on printed circuit boards (PCB's). 
 By artificially expanding the training dataset through transformations like rotations, flips, scaling, and translations, data augmentation 
-helps improve the robustness and generalization ability of the model\cite{Cubuk2020AutoAugment}. This process mitigates over-fitting by exposing the model to a diverse 
+helps improve the robustness and generalization ability of the model \cite{Cubuk2020AutoAugment}. This process mitigates over-fitting by exposing the model to a diverse 
 set of variations and scenarios that it might encounter in real-world applications. Consequently, data augmentation enhances the model's 
 ability to accurately detect and classify defects, even when faced with new or slightly altered images, thereby improving its overall 
-performance and reliability in practical deployment\cite{Cubuk2020AutoAugment}.
+performance and reliability in practical deployment \cite{Cubuk2020AutoAugment}.
 Two approaches were considered for data augmentation: Using a library or implementing the augmentations manually. The former is more convenient and less error-prone, while the latter offers more flexibility and control over the augmentation process. 
 
 \subsubsection{Augmentations via Albumentations}
 
-The library-based approach made use of the library "Albumentations"\cite{AlbumentationsDocs}, specifically techniques available like random brightness or contrast, random cropping of the image, rotation, horizontal or vertical flipping, including random sun flares or changing of the hue saturation value (See Fig.~\ref{fig:Albumentations}.).
+The library-based approach made use of the library "Albumentations" \cite{AlbumentationsDocs}, specifically techniques available like random brightness or contrast, random cropping of the image, rotation, horizontal or vertical flipping, including random sun flares or changing of the hue saturation value (See Fig.~\ref{fig:Albumentations}.).
 
 \begin{figure}[h]
     \centering
@@ -190,7 +190,7 @@ In this case the defect would not be detected by the model. Another problem was 
 \subsubsection{Manual Augmentations}
 Let us now discuss the pre-processing that went into preparing the dataset before and after augmentation so that it would not lead to insufficient or inefficient training.
 
-A major decision was to convert the images to gray scale since that would improve computing power immensely while there would be no observable loss in the features of the images\cite{Saponara2022} (See Fig.~\ref{fig:Rgb_gray}.).
+A major decision was to convert the images to gray scale since that would improve computing power immensely while there would be no observable loss in the features of the images \cite{Saponara2022} (See Fig.~\ref{fig:Rgb_gray}.).
 \begin{figure}[h]
     \centering
     \includegraphics[width=0.8\textwidth]{./graphics/rgb vs grayscale.png}
@@ -207,16 +207,7 @@ Another decision made early on after observing the size of images (dim:600x600),
     \label{fig:croppedimagewithmask}
 \end{figure}
 \clearpage
-We observed various issues during the process of implementing on-the-fly augmentation by data generators like ImageDataGenerator\cite{TensorFlowImageDataGenerator} on the dataset. We managed to solve some of those issues; like instances where masks and labels were incorrectly referenced to the original image or adaption to our multi-output structure (segmentation and classification) or insufficient control over the type of augmentation. Others were harder to overcome because they were intrinsic and needed solutions too complex to be practical. Similar to Albumentations; the  augmentation provided by ImageDataGenerator performed rotation and zoom transformations differently on the images and their corresponding masks so that images and masks would not be aligned anymore after augmentation, or defects that were wholly or partially cropped by shift transformations. Considering all this we concluded that it would be beneficial to invest time in implementing manual augmentation for the cost of having to save all the augmented dataset to disk. For training a robust and reliable model, the following augmentation techniques were implemented (See Fig.~\ref{fig:manual_augmentation}.).:
-
-\begin{figure}[h]
-    \centering
-    \begin{turn}{270}
-    \includegraphics[width=1\textwidth]{./graphics/manual augmentation.png}
-    \end{turn}
-    \caption{Manually implemented augmentations}
-    \label{fig:manual_augmentation}
-\end{figure}
+We observed various issues during the process of implementing on-the-fly augmentation by data generators like ImageDataGenerator \cite{TensorFlowImageDataGenerator} on the dataset. We managed to solve some of those issues; like instances where masks and labels were incorrectly referenced to the original image or adaption to our multi-output structure (segmentation and classification) or insufficient control over the type of augmentation. Others were harder to overcome because they were intrinsic and needed solutions too complex to be practical. Similar to Albumentations; the  augmentation provided by ImageDataGenerator performed rotation and zoom transformations differently on the images and their corresponding masks so that images and masks would not be aligned anymore after augmentation, or defects that were wholly or partially cropped by shift transformations. Considering all this we concluded that it would be beneficial to invest time in implementing manual augmentation for the cost of having to save all the augmented dataset to disk. For training a robust and reliable model, the following augmentation techniques were implemented (See Fig.~\ref{fig:manual_augmentation}.).:
 
 \begin{itemize}
     \item Rotating the image 
@@ -228,13 +219,35 @@ We observed various issues during the process of implementing on-the-fly augment
     \item Introducing Gaussian noise to the image
 \end{itemize}
 
+
+\begin{figure}[h]
+    \centering
+    %\begin{turn}{270}
+    \includegraphics[width=1\textwidth]{./graphics/manual augmentation.png}
+    %\end{turn}
+    \caption{Manually implemented augmentations}
+    \label{fig:manual_augmentation}
+\end{figure}
+
+
 To implement cropping on the dataset, we had to keep in mind that the relevant label/defect class would be properly referenced to the image and its corresponding mask. In our case, we had to introduce the "none" class to offset the generation of cropped images that had no "defects".
 
 While preprocessing the dataset, we also observed that sometimes the defect would be located in the cropping boundary of the image. If we implemented the cropping without any intervention, the cropped image would not provide a good feature set for the model to train on. Hence we implemented a boundary shifting function which ensured that the defect would not be cropped.
 
 Another observation was that while augmentation, if the defect was located at the boundary of the image, sometimes it would remove the defect from the image after implementing the augmentation
 technique. Hence we had to implement a check to ensure that the relevant features were not lost. With these checks and balances, we managed to ensure that the dataset for training the model was balanced, relevant and not suffering from feature losses.
-As already mentioned, the images in the dataset have single and multiple defects in a single instance (image). Therefore, we had to cater for the cases in which there were multiple defects in a single image so that the model could process the mask and label for the defects accordingly. We brainstormed on how to handle such instances and agreed on removing multiple defects from a single image and separating all defects into single image instances. For this we implemented a defect separation function.
+As already mentioned, the images in the dataset have single and multiple defects in a single instance (image). Therefore, we had to cater for the cases in which there were multiple defects in a single image so that the model could process the mask and label for the defects accordingly. We brainstormed on how to handle such instances and agreed on removing multiple defects from a single image and separating all defects into single image instances. For this we implemented a defect separation function, which put a mask on all the defects except one (See Fig.~\ref{fig:manual_augmentation}.).
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{./graphics/separated_img1.png}
+    %\includegraphics[width=0.8\textwidth]{./graphics/separated_img2.png}
+    \includegraphics[width=0.5\textwidth]{./graphics/separated_img3.png}
+    \includegraphics[width=0.5\textwidth]{./graphics/separated_img4.png}
+    \includegraphics[width=0.5\textwidth]{./graphics/separated_img5.png}
+    \caption{Manually implemented defect separation}
+    \label{fig:defect_separation}
+\end{figure}
 
 \clearpage
 \newpage
@@ -246,8 +259,8 @@ The methodology of this project involves several key steps: data set generation 
 
 \subsubsection{VGG16}
 
-The VGG16 model is a Convolutional Neural Network architecture that has been widely used for image classification tasks. It consists of 16 layers, including 13 convolutional layers and 3 fully connected layers (See Fig.~\ref{fig:VGG16architecture}.). The model has been pre-trained on the ImageNet\cite{ConxVGG16ImageNet} dataset, which contains millions of images across thousands of classes. By leveraging transfer learning, we can take advantage of the features learned by the model on ImageNet and fine-tune it on our PCB dataset.
-The model was implemented using the TensorFlow and Keras\cite{KerasAPI} libraries.  
+The VGG16 model is a Convolutional Neural Network architecture that has been widely used for image classification tasks. It consists of 16 layers, including 13 convolutional layers and 3 fully connected layers (See Fig.~\ref{fig:VGG16architecture}.). The model has been pre-trained on the ImageNet \cite{ConxVGG16ImageNet} dataset, which contains millions of images across thousands of classes. By leveraging transfer learning, we can take advantage of the features learned by the model on ImageNet and fine-tune it on our PCB dataset.
+The model was implemented using the TensorFlow and Keras \cite{KerasAPI} libraries.  
 
 VGG16 requires the following additional preprocessing steps: 
 
@@ -263,7 +276,7 @@ Two approaches were tested: freezing (keeping) all pretrained layers and only ad
 
 \begin{figure}[h]
     \centering
-    \includegraphics[width=0.14\textwidth]{./graphics/3.png}
+    \includegraphics[width=0.12\textwidth]{./graphics/3.png}
     \caption{VGG16 with two pathways/modules.}
     \label{fig:VGG16architecture}
 \end{figure}
@@ -273,7 +286,7 @@ For the detection task the loss function GIoU and metrics One-Hot-IOU was used, 
 
 To avoid unnecessary computation, callbacks were implemented such as early stopping and model checkpoint \cite{TensorFlowAPI}. 
 
-Unfortunately, the input for VGG16 can only handle single bounding boxes per instance. And in the dataset there are multiple instances with 2 or more defects. Hence, due to the pre-processing error, the model could not produce the desired results at the moment. We are currently still trying to get this implementation to work. So hopefully in the future results will be shared once this model is successfully implemented. 
+Unfortunately, the input for VGG16 can only handle single bounding boxes per instance. And in the dataset there are multiple instances with 2 or more defects. Hence, the model could not produce the desired results. The model evaluation shows low accuracy, precision and recall.   
 
 \clearpage
 \newpage
@@ -281,11 +294,11 @@ Unfortunately, the input for VGG16 can only handle single bounding boxes per ins
 \subsubsection{RES-UNET}
 For the development and implementation of our machine learning model, we went through many design iterations to finally decide on the RES-UNET model scheme (See Fig.~\ref{fig:resunetmodel}.).
 
-The RES-UNET model provides the combined qualities of a Residual network connection to enhance feature extraction at every stage of the Unet network architecture. With the help of having the Residual connection, the model has ease of learning by removing the vanishing gradient problem along with robust feature extraction\cite{Zhao2020}. The U-net architecture ensures with the help of skip connection, that the high resolution features, which we need in our case for the defect segmentation task (object detection), are combined from the encoder and decoder to preserve spatial information.
+The RES-UNET model provides the combined qualities of a Residual network connection to enhance feature extraction at every stage of the Unet network architecture. With the help of having the Residual connection, the model has ease of learning by removing the vanishing gradient problem along with robust feature extraction \cite{Zhao2020}. The U-net architecture ensures with the help of skip connection, that the high resolution features, which we need in our case for the defect segmentation task (object detection), are combined from the encoder and decoder to preserve spatial information.
 
 As our task is to classify and detect the defects, we need both segmentation and classification outputs. This model handles both required outputs for a single instance simultaneously. We did entertain the idea of having separate models for obtain the two outputs, but decided to explore this combinatorial model architecture implementation instead.
 
-Using two different branches/modules enables us to employ different loss functions (while emphasizing the loss weights for the training) and metrics for the detection and classification tasks.
+Using two different branches / modules enables us to employ different loss functions (while emphasizing the loss weights for the training) and metrics for the detection and classification tasks.
 
 We also utilized the various callbacks (timing, early-stopping, reduce-learning-rate and checkpoint) to avoid over-fitting and over-computation by unnecessary training. 
 
@@ -331,16 +344,16 @@ After the required data augmentation, the model can start training with the foll
 \begin{minted}[breaklines]{text}
 !python path/to/train.py --data /path/to/data.yaml --weights yolov5s.pt --img 640 --epochs 50 --batch-size 16 --cache
 \end{minted}
-In the current iteration of our training, we used the default Confidence and IoU thresholds (conf-thres=0.25 and iou-thres=0.45). The model was trained for 50 epoch, with batch size as 16. The pretrained small model (yolov5s.pt) weights were used. Potentially with further fine tuning training it can be done by freezing some layers and training on the desired layers. The choice to train on small model is because of the computational restrictions of our personal computers and also time restrictions\cite{YOLOv5GitHub}. The results were compelling enough that it presents a good solution for our current object detection project. The output results for the models are discussed in the next section.
+In the current iteration of our training, we used the default Confidence and IoU thresholds (conf-thres=0.25 and iou-thres=0.45). The model was trained for 50 epoch, with batch size as 16. The pretrained small model (yolov5s.pt) weights were used. Potentially with further fine tuning training it can be done by freezing some layers and training on the desired layers. The choice to train on small model is because of the computational restrictions of our personal computers and also time restrictions \cite{YOLOv5GitHub}. The results were compelling enough that it presents a good solution for our current object detection project. The output results for the models are discussed in the next section.
 
 \clearpage
 \newpage
 
 \section{Evaluation}
 
-The performance of the models was evaluated using accuracy, MeanIoU, precision, recall, and F1-score metrics. The VGG16 model unfortunately could not achieve any results but for the YOLOv5 and the RES-UNET model we achieved a classification accuracy of ~95\%.
+The performance of the models was evaluated using accuracy, MeanIoU, precision, recall, and F1-score metrics. The VGG16 model unfortunately could not achieve any reliable results and we decided to not pursue model implementation based on VGG16. On the other hand, for the YOLOv5 and the RES-UNET model, we achieved a classification accuracy of ~95\%. 
 
-Despite the high accuracy, both models faced challenges in detecting certain defects. The RES-UNET model struggled with detecting small defects, while the YOLOv5 model had difficulty distinguishing between similar defect types. The results are discussed in detail below.
+Despite the high accuracy, both latter models faced challenges in detecting certain defects. The RES-UNET model struggled with detecting small defects, while the YOLOv5 model had difficulty distinguishing between similar defect types. The results are discussed in detail below.
 
 \subsection{RES-UNET}
 
@@ -366,10 +379,10 @@ The {\bf size of our validation} set is 20\% of the cropped, separated, balanced
 \end{figure}
 
 The graphs in Fig.~\ref{fig:unet_training_history} show the development of {\bf key metrics during the training} epochs. We used Binary-Cross-Entropy and Categorical-Cross-Entropy as loss functions for the segmentation and classification outputs, respectively. The respective activation functions have been Sigmoid (binary) and Softmax (multi-class). Validation accuracy for segmentation is at 98.0\% after the training with 14 epochs with loss weights 80/20 seg/class.
-%Validation accuracy for segmentation is above 93\% already after the first training (20 epochs with loss weights 80/20 seg/class) and reaching 97\% after the final training (20 epochs with loss weights inverted i.e. 20/80 seg/class). It is not before the 10th epoch that the validation accuracy for classification is reaching 70\%. Same holds for classification precision and recall.
+Validation accuracy for segmentation is above 93\% already after the first training (20 epochs with loss weights 80/20 seg/class) and reaching 97\% after the final training (20 epochs with loss weights inverted i.e. 20/80 seg/class). It is not before the 10th epoch that the validation accuracy for classification is reaching 80\%. Same holds for classification precision and recall.
+
 
 We can observe some encouraging results from the validation of the RES-UNET model. The metrics' graphs show improvement still which indicates that the model will improve with training over more epochs. 
-
 \begin{figure}[H]
     \centering
     %\begin{turn}{270}
@@ -382,33 +395,27 @@ We can observe some encouraging results from the validation of the RES-UNET mode
 \clearpage
 
 The {\bf classification report} (See Fig.~\ref{fig:unet_classification_report}.) and the {\bf confusion matrix} (See Fig.~\ref{fig:unet_confusion}) on the validation set show that precision and recall for each defect class vary but they are generally stable. 100\% of the short circuit detections on the test set are correct, while still 15\% of the detected "none" class are from a different, indeed all not-none classes are erronuously predicted as 'none' at least once. Likewise, 98\% of the missing holes are correctly identified, while 8\% of the "none" and "spur" class are not being detected. Hence we can observe that the defect classes of "none", "spur" and " mouse bites" are the most difficult to detect accurately. Especially the 'none' class should have a high precision whereas a suboptimal recall on that class is more tolerable. We are interested in finding the defects on the PCBs, so one would need to have as few wrongly detected 'none' classes as possible. Meanwhile a wrongly classified real 'none' class is just 'false alarm'.
-
+																			
 \bigskip
-
+														  
 \begin{figure}[H]
     \centering
     \includegraphics[width=\textwidth]{./graphics/RESUNET_classification_report_graphical_v240618_1.png}
     \caption{Classification metrics for classification output}
     \label{fig:unet_classification_report}
 \end{figure}
-						
-						
+
+														
 %\newgeometry{left=-3cm, right=-3cm, top=-3cm, bottom=-3cm}
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\paperwidth,height=0.7\paperheight,keepaspectratio]{./graphics/RESUNET_confusion_matrix_v240618_1.png}
-    
-	\caption{Confusion Matrix for classification output}
+			  
+    \caption{Confusion Matrix for classification output}
     \label{fig:unet_confusion}
 \end{figure}
 \restoregeometry
-
-
-
-
-
-
-
+		
 \clearpage
 %\newpage
 
@@ -451,7 +458,7 @@ Fig.~\ref{fig:finalpred1_unet} presents the final representation of the results 
 \newpage
 
 \subsection{YOLOv5}
-The model was trained for 50 epochs and it can be observed from the resulting graphs that the training is still improving hence for further tests we can train the model over more epochs, though by observing the fluctuations in the validation loss, we can argue that model might be moving towards over fitting. The results are observably accurate already with just "Mouse-bite" and "Spur" type of defect giving issues to the model. The "Missing-hole" defect is the easiest for the model to detect, compounding the observation from the U-net model results which also performed the best for this type of defect.
+The model was trained for 64 epochs and it can be observed from the resulting graphs that the training is still improving hence for further tests we can train the model over more epochs, though by observing the fluctuations in the validation loss, we can argue that model might be moving towards over fitting. The results are observably accurate already with just "Mouse-bite" and "Spur" type of defect giving issues to the model. The "Missing-hole" defect is the easiest for the model to detect, compounding the observation from the U-net model results which also performed the best for this type of defect.
 The model was trained on pretrained weights for YOLOv5s since this is a small to medium size dataset. In future, training with fine tuning self-initialized weights can improve the results especially in case of over fitting.
 
 Graphs for YOLOv5 model : (See Fig.~\ref{fig:graphs_yolo}.).
