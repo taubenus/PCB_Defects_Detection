@@ -1,0 +1,32 @@
+<annotation>
+    <folder>PCB</folder>
+    <filename>l_light_09_missing_hole_05_1_600</filename>
+    <source>
+        <database>My Database</database>
+        <annotation>PCB</annotation>
+        <image>flickr</image>
+        <flickrid>NULL</flickrid>
+    </source>
+    <owner>
+        <flickrid>NULL</flickrid>
+        <name>idaneel</name>
+    </owner>
+    <size>
+        <width>600</width>
+        <height>600</height>
+        <depth>3</depth>
+    </size>
+    <segmented>0</segmented>
+    <object>
+        <name>missing_hole</name>
+        <pose>Unspecified</pose>
+        <truncated>0</truncated>
+        <difficult>0</difficult>
+        <bndbox>
+            <xmin>95</xmin>
+            <ymin>330</ymin>
+            <xmax>122</xmax>
+            <ymax>355</ymax>
+        </bndbox>
+    </object>
+</annotation>
