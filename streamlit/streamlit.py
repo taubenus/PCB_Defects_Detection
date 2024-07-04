@@ -122,7 +122,7 @@ elif page == pages[1]:
     st.write("##### Is there a possibilty to minimize the features?")
     st.write("""Let's inspect the images from the dataset: \n""")
 
-    image_4 = load_image('Annotated_defects.jpg')
+    image_4 = load_image('Annotated_defects.png')
     st.image(image_4, caption="Sample image from the PCB dataset with annotated defects", 
              width=400)
     
