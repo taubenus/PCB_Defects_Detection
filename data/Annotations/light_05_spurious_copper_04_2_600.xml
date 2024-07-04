@@ -1,0 +1,23 @@
+<annotation>
+  <folder>JPEGImages</folder>
+  <filename>light_05_spurious_copper_04_2_600</filename>
+  <path>F:\PCB\PCB_DATASET_New\VOCPCB_800\_crop_600\JPEGImages\light_05_spurious_copper_04_2_256.jpg</path>
+  <size>
+    <width>600</width>
+    <height>600</height>
+    <depth>3</depth>
+  </size>
+  <segmented>0</segmented>
+  <object>
+    <name>spurious_copper</name>
+    <pose>Unspecified</pose>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <bndbox>
+      <xmin>138</xmin>
+      <ymin>511</ymin>
+      <xmax>185</xmax>
+      <ymax>557</ymax>
+    </bndbox>
+  </object>
+</annotation>

@@ -1,0 +1,32 @@
+<annotation>
+    <folder>PCB</folder>
+    <filename>rotation_90_light_09_open_circuit_01_3_600</filename>
+    <source>
+        <database>My Database</database>
+        <annotation>PCB</annotation>
+        <image>flickr</image>
+        <flickrid>NULL</flickrid>
+    </source>
+    <owner>
+        <flickrid>NULL</flickrid>
+        <name>idaneel</name>
+    </owner>
+    <size>
+        <width>600</width>
+        <height>600</height>
+        <depth>3</depth>
+    </size>
+    <segmented>0</segmented>
+    <object>
+        <name>open_circuit</name>
+        <pose>Unspecified</pose>
+        <truncated>0</truncated>
+        <difficult>0</difficult>
+        <bndbox>
+            <xmin>485</xmin>
+            <ymin>242</ymin>
+            <xmax>504</xmax>
+            <ymax>261</ymax>
+        </bndbox>
+    </object>
+</annotation>

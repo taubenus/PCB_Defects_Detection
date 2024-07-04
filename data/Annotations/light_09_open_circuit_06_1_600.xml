@@ -1,0 +1,35 @@
+<annotation>
+  <folder>JPEGImages</folder>
+  <filename>light_09_open_circuit_06_1_600</filename>
+  <path>F:\PCB\PCB_DATASET_New\VOCPCB_800\_crop_600\JPEGImages\light_09_open_circuit_06_1_256.jpg</path>
+  <size>
+    <width>600</width>
+    <height>600</height>
+    <depth>3</depth>
+  </size>
+  <segmented>0</segmented>
+  <object>
+    <name>open_circuit</name>
+    <pose>Unspecified</pose>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <bndbox>
+      <xmin>555</xmin>
+      <ymin>402</ymin>
+      <xmax>580</xmax>
+      <ymax>420</ymax>
+    </bndbox>
+  </object>
+  <object>
+    <name>open_circuit</name>
+    <pose>Unspecified</pose>
+    <truncated>0</truncated>
+    <difficult>0</difficult>
+    <bndbox>
+      <xmin>492</xmin>
+      <ymin>523</ymin>
+      <xmax>510</xmax>
+      <ymax>537</ymax>
+    </bndbox>
+  </object>
+</annotation>

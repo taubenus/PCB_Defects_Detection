@@ -1,0 +1,44 @@
+<annotation>
+    <folder>PCB</folder>
+    <filename>l_light_12_open_circuit_09_2_600</filename>
+    <source>
+        <database>My Database</database>
+        <annotation>PCB</annotation>
+        <image>flickr</image>
+        <flickrid>NULL</flickrid>
+    </source>
+    <owner>
+        <flickrid>NULL</flickrid>
+        <name>idaneel</name>
+    </owner>
+    <size>
+        <width>600</width>
+        <height>600</height>
+        <depth>3</depth>
+    </size>
+    <segmented>0</segmented>
+    <object>
+        <name>open_circuit</name>
+        <pose>Unspecified</pose>
+        <truncated>0</truncated>
+        <difficult>0</difficult>
+        <bndbox>
+            <xmin>232</xmin>
+            <ymin>208</ymin>
+            <xmax>253</xmax>
+            <ymax>224</ymax>
+        </bndbox>
+    </object>
+    <object>
+        <name>open_circuit</name>
+        <pose>Unspecified</pose>
+        <truncated>0</truncated>
+        <difficult>0</difficult>
+        <bndbox>
+            <xmin>339</xmin>
+            <ymin>397</ymin>
+            <xmax>357</xmax>
+            <ymax>411</ymax>
+        </bndbox>
+    </object>
+</annotation>
