@@ -97,8 +97,8 @@ elif page == pages[1]:
 - Spur\n
 - Spurious copper""")
     with st.expander('View sample defect types', expanded=False):
-    image_3 = load_image('Defect_types.png')
-    st.image(image_3, caption="Sample defects explored in this project", use_column_width='auto')
+        image_3 = load_image('Defect_types.png')
+        st.image(image_3, caption="Sample defects explored in this project", use_column_width='auto')
 
     options = ['missing_hole', 'mouse_bite', 'open_circuit', 'short', 'spur_', 'spurious_copper']
     st.markdown('### Sample images with defects')
