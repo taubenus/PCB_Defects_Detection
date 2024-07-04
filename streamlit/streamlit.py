@@ -281,7 +281,7 @@ elif page == pages[5]:
     #image_faiza = load_image('faiza.png')
     #st.image(image_faiza, use_column_width=200)
     st.write("### Faiza Waheed") 
-    st.write("""*I am a Communications and Control Systems Engineer with three years of experience as an 
+    st.write("""*I am a Communications Engineer with three years of experience as an 
              Instrumentation and Control Systems Engineer. I furthered my education in Germany, 
              earning a Master's Degree in Communications Electronics from the Technical University of Munich. 
              My career then led me to roles as a Testing Engineer at Intel and a Chip Development Engineer 
