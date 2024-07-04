@@ -116,7 +116,8 @@ elif page == pages[1]:
             plt.axis('off')
             plt.title(f"{choice} {i + 1}")
             plt.imshow(img)
-        st.pyplot(fig)
+        st.image(fig, caption="Sample images from the selected class of defect", 
+             width=400)
 		
 		
     st.write("##### Is there a possibilty to minimize the features?")
