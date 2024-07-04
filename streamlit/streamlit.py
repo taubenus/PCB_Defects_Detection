@@ -97,22 +97,22 @@ elif page == pages[1]:
 - Spur\n
 - Spurious copper""")
     with st.expander('View sample defect types', expanded=False):
-        image_3 = load_image('Defect_types.png')
-        st.image(image_3, caption="Sample defects explored in this project", use_column_width='auto')
+    image_3 = load_image('Defect_types.png')
+    st.image(image_3, caption="Sample defects explored in this project", use_column_width='auto')
 
-	options = ['missing_hole', 'mouse_bite', 'open_circuit', 'short', 'spur_', 'spurious_copper']
+    options = ['missing_hole', 'mouse_bite', 'open_circuit', 'short', 'spur_', 'spurious_copper']
     st.markdown('### Sample images with defects')
     choice = st.selectbox('Select Defect', options, index=None, placeholder='Choose a defect type', label_visibility='collapsed')
-    if choice != None:
+    if choice is not None:
         img_pool_choice = [os.path.join(image_path, filename) for filename in os.listdir(image_path) if choice in filename]
         rnd_3 = np.random.choice(range(20), 3, replace=False)
         fig = plt.figure(figsize=(45, 15))
-        for i,j in enumerate(rnd_3):
+        for i, j in enumerate(rnd_3):
             img = cv2.imread(img_pool_choice[j], cv2.IMREAD_COLOR)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            plt.subplot(3, 1, i+1)
+            plt.subplot(3, 1, i + 1)
             plt.axis('off')
-            plt.title(f"{choice} {i+1}")
+            plt.title(f"{choice} {i + 1}")
             plt.imshow(img)
         st.pyplot(fig, use_container_width=False)
 		
