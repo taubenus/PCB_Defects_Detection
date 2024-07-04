@@ -13,7 +13,7 @@ from collections import Counter
 
 @st.cache_data
 def load_image(imageName):
-    image = Image.open('./figures/' + imageName)
+    image = Image.open(current_dir + '/figures/' + imageName)
     return image
 
 current_dir = os.getcwd()
