@@ -54,7 +54,7 @@ pillow==10.3.0
 pipreqs==0.5.0
 platformdirs==4.2.1
 prompt-toolkit==3.0.43
-protobuf==5.27.2
+protobuf==3.20.3
 pure-eval==0.2.2
 pyarrow==16.1.0
 pydeck==0.9.1
