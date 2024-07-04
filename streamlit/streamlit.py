@@ -14,7 +14,7 @@ from collections import Counter
 @st.cache_data
 def load_image(imageName):
     current_dir = os.getcwd()
-    image = Image.open(current_dir + '/figures/' + imageName)
+    image = Image.open(current_dir + 'figures' + imageName)
     return image
 
 current_dir = os.getcwd()
