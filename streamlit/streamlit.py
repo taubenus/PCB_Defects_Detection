@@ -107,7 +107,7 @@ elif page == pages[1]:
     choice = st.selectbox('Select Defect', options, index=0, label_visibility='collapsed')
     if choice is not None:
         img_pool_choice = [os.path.join(image_path, filename) for filename in os.listdir(image_path) if choice in filename]
-        rnd_3 = np.random.choice(range(20), 3, replace=False)
+        rnd_3 = np.random.choice(range(6), 3, replace=False)
         fig = plt.figure(figsize=(45, 15))
         for i, j in enumerate(rnd_3):
             img = cv2.imread(img_pool_choice[j], cv2.IMREAD_COLOR)
