@@ -19,7 +19,7 @@ def load_image(imageName):
     return image
 
 current_dir = os.getcwd()
-parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+parent_dir = os.path.abspath(os.getcwd())
 
 image_path = os.path.abspath(os.path.join(parent_dir, 'data', 'Images_bb'))
 
