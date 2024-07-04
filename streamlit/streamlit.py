@@ -108,7 +108,7 @@ elif page == pages[1]:
     if choice is not None:
         img_pool_choice = [os.path.join(image_path, filename) for filename in os.listdir(image_path) if choice in filename]
         rnd_3 = np.random.choice(range(6), 3, replace=False)
-        fig = plt.figure(figsize=(45, 15))
+        fig = plt.figure(figsize=(24, 12))
         for i, j in enumerate(rnd_3):
             img = cv2.imread(img_pool_choice[j], cv2.IMREAD_COLOR)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
