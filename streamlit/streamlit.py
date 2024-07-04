@@ -200,10 +200,10 @@ that there were only single defects in one image, i.e. separation of images by d
 
     st.write(
 """- **Randomization of dataset:** We implemented random; but defect class-wise balanced; 
-dataset selection so that we could avoid traiing baises.""")
+dataset selection so that we could avoid training baises.""")
 
     st.write(
-"""Once we have managed to implement the above mentioned feature engineering aspects, we can 
+"""Once we managed to implement the above mentioned feature engineering aspects, we could 
 get on with the next step of Model architecture design and training.""")
     
 elif page == pages[3]:
@@ -249,7 +249,7 @@ elif page == pages[4]:
              and recall for each defect class vary but they are generally stable.""")
     
     image_14 = load_image('RESUNET_classification_report_v240618_1.png')
-    st.image(image_14, caption="Classification metrics for classification output", 
+    st.image(image_14, caption="Metrics for classification output", 
              use_column_width='auto')
     
     image_15 = load_image('RESUNET_confusion_matrix_v240618_1.png')
