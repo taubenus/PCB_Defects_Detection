@@ -81,7 +81,7 @@ and classify PCB defects.""")
 elif page == pages[1]:
     st.write("# Data Exploration:")
     st.write("A sample image for defective PCB:")
-    image_2 = load_image('missing_hole_1.jpg')
+    image_2 = load_image('spurious_copper_1.jpg')
     st.image(image_2, caption="Sample of a defected PCB", width=500)
 
     st.write("##### The images are too large to handle without any pre-processing. Example Image dimensions: ", 
@@ -254,7 +254,7 @@ elif page == pages[4]:
     
     image_15 = load_image('RESUNET_confusion_matrix_v240618_1.png')
     st.image(image_15, caption="Confusion Matrix for classification output", 
-             use_column_width='auto')
+             width=500)
     
     st.write("##### RES-NET model Results")
     st.write("""The figure below illustrates that the location of the defects or the pixel matrix is predicted 
