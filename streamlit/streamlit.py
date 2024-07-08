@@ -110,15 +110,16 @@ elif page == pages[1]:
     if choice is not None:
         img_pool_choice = [os.path.join(image_path, filename) for filename in os.listdir(image_path) if options[choice] in filename]
         rnd_2 = np.random.choice(range(6), 2, replace=False)
-        fig = plt.figure(figsize=(20, 20))
+        fig = plt.figure(figsize=(15, 30))
         for i, j in enumerate(rnd_2):
             img = cv2.imread(img_pool_choice[j], cv2.IMREAD_COLOR)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            plt.subplot(1, 2, i + 1)
+            plt.subplot(2, 1, i + 1)
             plt.axis('off')
             plt.title(f"{choice} {i + 1}")
             plt.imshow(img)
         st.pyplot(fig)
+    st.write("We see that each image can have more than one defect, although in each image we only have one type of defect.")
     local_css('expander_regular.css')
     with st.expander(f"Dimensions of dataset images: {image_2.size}"):
         st.write("⭢ Those images are too large to handle without any pre-processing.")
@@ -140,23 +141,22 @@ elif page == pages[1]:
 
 elif page == pages[2]:
     st.write("# Feature Engineering")
-    st.write("##### 1. Visualization of dataset")
-    st.write("""We observed from the sample images, that the number of defects on each image varies. 
-             Hence we looked at the distribution of the dataset, whether it was balanced or not.""")
-    image_5 = load_image('data_balance.png')
-    st.image(image_5, caption="Defect distribution", use_column_width='auto')
-    
-    st.write(""" **Observations**:  
-             
-- The dataset is relatively balanced overall. 
-- Unfortunately this is the visualization before doing feature engineering to ensure model robustness. 
-- We needed to augment the data and then reavaluate after implementing feature engineering.""")
-    st.write("##### 2. Data Augmentation")
-    st.write(
+    local_css('expander_bold.css')
+    with st.expander("1 - Visualization of dataset"):
+        st.write("**How balanced is our dataset?**")
+        image_5 = load_image('data_balance.png')
+        st.image(image_5, caption="Defect distribution", use_column_width='auto')
+        st.write(" **Observations**")  
+        st.write("- The dataset is relatively balanced overall.")
+        st.write("- Still, this is the visualization **before** doing feature engineering to ensure model robustness.")
+        st.write("- We need to augment the data and then reavaluate the label distribution after implementing feature engineering.")
+
+    with st.expander("2 - Data Augmentation"):
+        st.write(
 """Data preprocessing plays a crucial role in constructing effective Machine Learning models, 
 as the quality of prediction results is closely tied to the thoroughness of data preprocessing.
 Our image preprocessing pipeline involved several key steps:\n\n""")
-    st.write(
+        st.write(
 """- **Dimension Handling:** Reducing the image dimensions initially from RGB to Grayscale,
 and then cropping the the image to 100 x 100 grayscale images.\n""")
         
