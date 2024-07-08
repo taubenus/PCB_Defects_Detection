@@ -52,7 +52,7 @@ def local_css(file_name):
 
 if page == pages[0]:
     st.html("<h1 style='text-align: center'>Detection and Classification of Defects on Printed Circuit Boards (PCBs) </hr> with Machine Learning</h1>")
-    local_css("bold_expander.css")
+    local_css("expander_bold.css")
     with st.expander("Introduction", expanded=False):
         st.write("- This project explores various machine learning methodologies for detecting and classifying defects on PCBs, using advanced computer vision techniques")
         st.write("- PCBs are essential components in nearly all electronic devices.")
@@ -119,7 +119,7 @@ elif page == pages[1]:
             plt.title(f"{choice} {i + 1}")
             plt.imshow(img)
         st.pyplot(fig)
-    local_css('regular_expander.css')
+    local_css('expander_regular.css')
     with st.expander(f"Dimensions of dataset images: {image_2.size}"):
         st.write("⭢ Those images are too large to handle without any pre-processing.")
 		
