@@ -18,7 +18,8 @@ def load_image(imageName):
     image = Image.open(image_path)
     return image
 
-parent_dir = os.path.abspath(os.pardir)
+current_dir = os.getcwd()
+parent_dir = os.path.abspath(os.getcwd())
 image_path = os.path.abspath(os.path.join(parent_dir, 'data', 'Images_bb'))
 
 
@@ -48,7 +49,9 @@ def hide_last_line():
         st.session_state.line_index -= 1
 
 def local_css(file_name):
-    with open(file_name) as f:
+    current_dir = os.getcwd()
+    file_path = os.path.join(current_dir, 'streamlit', file_name)
+    with open(file_path) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 if page == pages[0]:
