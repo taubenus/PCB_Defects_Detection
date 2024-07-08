@@ -50,11 +50,9 @@ def local_css(file_name):
     with open(file_name) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
-local_css("style.css")
-
 if page == pages[0]:
-    st.markdown("# Detection and Classification of Defects on Printed Circuit Boards (PCBs) with Machine Learning")
-
+    st.html("<h1 style='text-align: center'>Detection and Classification of Defects on Printed Circuit Boards (PCBs) </hr> with Machine Learning</h1>")
+    local_css("bold_expander.css")
     with st.expander("Introduction", expanded=False):
         st.write("- This project explores various machine learning methodologies for detecting and classifying defects on PCBs, using advanced computer vision techniques")
         st.write("- PCBs are essential components in nearly all electronic devices.")
@@ -91,66 +89,54 @@ if page == pages[0]:
 analysis and advanced feature engineering with the practical application of machine learning. """)
     st.write("""Our goal was to excel in our endeavor by utilizing all available tools to successfully identify 
 and classify PCB defects.""")
-    
-
 
     
 elif page == pages[1]:
-    st.write("# Data Exploration:")
-    st.write("A sample image for defective PCB:")
-    image_2 = load_image('spurious_copper_1.jpg')
+    st.write("# Data Exploration")
+    st.write("- The image dataset we used has over 10,000 synthetically generated images.")
+    st.write("- The dataset is publicly available at: https://www.kaggle.com/datasets/akhatova/pcb-defects)")
+    
+    st.write("#### Sample image for a defective PCB:")
+    image_2 = load_image('sample_pcb_open_circuit.jpg')
     st.image(image_2, caption="Sample of a defected PCB", width=500)
 
-    st.write("##### The images are too large to handle without any pre-processing. Example Image dimensions: ", 
-             image_2.size)
-    st.write("This image dataset has over 10,000 synthetically generated images.")
-    st.write("""- The dataset is located at:
-             (https://www.kaggle.com/datasets/akhatova/pcb-defects)""")
-    
-    st.write("##### What can we say about the defect types?")
-    st.write("""Let's look at the type of defects we will detect in this project: \n
-- Missing hole\n
-- Mouse bite\n
-- Open circuit\n
-- Short\n
-- Spur\n
-- Spurious copper""")
-    with st.expander('View sample defect types', expanded=False):
+    with st.expander("The types of defects we will detect in this project:", expanded=False):
         image_3 = load_image('Defect_types.png')
         st.image(image_3, caption="Sample defects explored in this project", use_column_width='auto')
 
-    options = ['missing_hole', 'mouse_bite', 'open_circuit', 'short', 'spur_', 'spurious_copper']
+    options = {'Missing Hole':'missing_hole', 'Mouse Bite':'mouse_bite', 'Open Circuit':'open_circuit', 'Short':'short', 'Spur':'spur_', 'Spurious Copper':'spurious_copper'}
     st.markdown('### Sample images with defects')
-    choice = st.selectbox('Select Defect', options, index=0, label_visibility='collapsed')
+    choice = st.selectbox('Select Defect', options.keys(), index=0, label_visibility='collapsed')
     if choice is not None:
-        img_pool_choice = [os.path.join(image_path, filename) for filename in os.listdir(image_path) if choice in filename]
-        rnd_3 = np.random.choice(range(6), 3, replace=False)
-        fig = plt.figure(figsize=(24, 12))
-        for i, j in enumerate(rnd_3):
+        img_pool_choice = [os.path.join(image_path, filename) for filename in os.listdir(image_path) if options[choice] in filename]
+        rnd_2 = np.random.choice(range(6), 2, replace=False)
+        fig = plt.figure(figsize=(20, 20))
+        for i, j in enumerate(rnd_2):
             img = cv2.imread(img_pool_choice[j], cv2.IMREAD_COLOR)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            plt.subplot(3, 1, i + 1)
+            plt.subplot(1, 2, i + 1)
             plt.axis('off')
             plt.title(f"{choice} {i + 1}")
             plt.imshow(img)
         st.pyplot(fig)
+    local_css('regular_expander.css')
+    with st.expander(f"Dimensions of dataset images: {image_2.size}"):
+        st.write("⭢ Those images are too large to handle without any pre-processing.")
 		
 		
-    st.write("##### Is there a possibilty to minimize the features?")
-    st.write("""Let's inspect the images from the dataset: \n""")
+    st.write("### Is there a possibilty to minimize the features?")
+    #st.write("""Let's inspect the images from the dataset: \n""")
 
-    image_4 = load_image('Annotated_defects.png')
-    st.image(image_4, caption="Sample image from the PCB dataset with annotated defects", 
-             width=400)
+    #image_4 = load_image('Annotated_defects.png')
+    #st.image(image_4, caption="Sample image from the PCB dataset with annotated defects", 
+    #         width=400)
     
     # sample checkbox for superimposed images
     with st.expander('View superimposed dataset images', expanded=False):
         image_4a = load_image("superimposed_image.png")
-        st.image(image_4a, caption='All the training images superimposed together')
-
-    st.write("""After inspecting the different images, there doesnt seem to be a possibility of reducing 
-features, as this will result in essential features being lost. All the various nuances 
-of the image need to be preserved for an accurate and robust anomaly detection model.""")
+        st.image(image_4a, caption='All the training images superimposed together', width=500)
+        st.write("- After inspecting the different images, there doesnt seem to be a possibility of reducing features, as this will result in essential features being lost.")
+        st.write("- All the various nuances of the image need to be preserved for an accurate and robust anomaly detection model.")
 
 elif page == pages[2]:
     st.write("# Feature Engineering")
