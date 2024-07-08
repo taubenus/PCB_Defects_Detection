@@ -13,15 +13,15 @@ from collections import Counter
 
 @st.cache_data
 def load_image(imageName):
-    current_dir = os.getcwd()
-    image_path = os.path.join(current_dir, 'streamlit/figures', imageName)
+    image_path = os.path.join(os.getcwd(), 'figures', imageName)
     image = Image.open(image_path)
     return image
 
-current_dir = os.getcwd()
-parent_dir = os.path.abspath(os.getcwd())
-
+parent_dir = os.path.abspath(os.pardir)
 image_path = os.path.abspath(os.path.join(parent_dir, 'data', 'Images_bb'))
+
+
+#st.set_page_config(layout="wide", page_title="My Streamlit App")
 
 st.sidebar.title("Table of contents")
 pages = ["Project Introduction", "Data Exploration", "Feature Engineering", "Model Training", 
@@ -31,52 +31,69 @@ page = st.sidebar.radio("Go to", pages)
 
 #st.sidebar.header(pages[5])
 st.sidebar.markdown("[*Faiza Waheed*](https://github.com/wfaiza/)")
-st.sidebar.markdown("[*Niels Hartano*](https://github.com/taubenus/)")
+st.sidebar.markdown("[*Niels Hartanto*](https://github.com/taubenus/)")
 st.sidebar.markdown("[*Gernot Gellwitz*](https://github.com/Kathartikon/)")
 
+if 'line_index' not in st.session_state:
+    st.session_state.line_index = 0
+
+# Function to reveal the next line
+def reveal_next_line(text_lines):
+    if st.session_state.line_index < len(text_lines):
+        st.session_state.line_index += 1
+
+def hide_last_line():
+    if st.session_state.line_index > 0:
+        st.session_state.line_index -= 1
+
+def local_css(file_name):
+    with open(file_name) as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
+
+local_css("style.css")
 
 if page == pages[0]:
-    st.write("# Detection and Classification of Defects on Printed Circuit Boards with Machine Learning")
-    st.write("## Defect detection on PCBs (Segmentation and Classification)")
-    st.write("""This project explores various machine learning methodologies for detecting and classifying 
-defects on printed circuit boards (PCBs), using advanced computer vision techniques. Printed Circuit Boards 
-(PCBs) are essential components in nearly all electronic devices. Ensuring their quality is critical, 
-as defects can lead to device malfunctions or failures. Traditional manual inspection methods are 
-time-consuming and error-prone, motivating the adoption of deep learning models such as VGG16, RES-UNET, 
-and YOLOv5 for automated defect detection.""")
-    st.write("""Our main object was to learn the architecture designing, training and deployment
-of a manually designed RES_UNET model.""")
-    st.write("#### Project Phases:")
-    st.write("""The project encompassed several key stages of a rigorous data science methodology. 
-We will cover these aspects of our Data Science project in detail, including:""")
-   
-    st.write("##### 1. Data Exploration:")
-    st.write( """- Explore the dataset to understand its structure, features, and potential pitfalls.\n
-- Use data visualization to identify key insights and relevance.\n
-- Ensure the quality of the images. """)
-       
-    st.write("##### 2. Feature Engineering:")
-    st.write("""- Perform feature engineering to balance and augment the data.\n
-- Create the masks (segmentation) and the target labels (classification) for training images.\n
-- Ensure the target labels were one-hot-encoded as per requirement of classification.\n
-- Implement a randomization strategy to neutralize the impact of baises and ensure model impartiality.\n
-- Ensuring the dataset is ready for model training.""")
-    
-    st.write("##### 3. Model Training:")
-    st.write("""- Develop various machine learning models to detect the anomalies (defects).""")
-    
-    st.write("##### 4. Model Optimization and Evaluation:")
-    st.write("""- Refine our designed model to maximize accuracy and robustness.
-- Rigorous evaluation of model performance. """)
-      
-    st.write("""This PCB defect detection project has been a dedicated effort for us, blending rigorous data 
-analysis and advanced feature engineering with the practical application of machine learning. 
-Our goal was to excel in our endeavor by utilizing all available tools to successfully identify 
-and classify PCB defects.""")
-    
+    st.markdown("# Detection and Classification of Defects on Printed Circuit Boards (PCBs) with Machine Learning")
+
+    with st.expander("Introduction", expanded=False):
+        st.write("- This project explores various machine learning methodologies for detecting and classifying defects on PCBs, using advanced computer vision techniques")
+        st.write("- PCBs are essential components in nearly all electronic devices.")
+        st.write("- Ensuring their quality is critical, as defects can lead to device malfunctions or failures.")
+        st.write("- Traditional manual inspection methods are time-consuming and error-prone")
+        st.write("- This motivates the adoption of deep learning models such as VGG16, RES-UNET, and YOLOv5 for automated defect detection.")
+        st.write("- Our main object was therefore to learn the architecture designing, training and deployment of a manually designed RES_UNET model.")
 
     image_1 = load_image('PCB-Final-Image.jpg')
     st.image(image_1, caption="Typical 2 layer PCB", use_column_width='auto')
+
+    st.write("### Project Phases")
+    #st.write("""The project encompassed several key stages of a rigorous data science methodology. We will cover these aspects of our Data Science project in detail, including:""")
+    with st.expander("1 - Data Exploration", expanded=False):
+        st.write("- Explore the dataset to understand its structure, features, and potential pitfalls.")
+        st.write("- Use data visualization to identify key insights and relevance.")
+        st.write("- Ensure the quality of the images.")
+       
+    with st.expander("2 - Feature Engineering"):
+        st.write("- Perform feature engineering to balance and augment the data.")
+        st.write("- Create the masks (segmentation) and the target labels (classification) for training images.")
+        st.write("- Ensure the target labels were one-hot-encoded as per requirement of classification.")
+        st.write("- Implement a randomization strategy to neutralize the impact of baises and ensure model impartiality.")
+        st.write("- Ensuring the dataset is ready for model training.")
+    
+    with st.expander("3 - Model Training"):
+        st.write("- Develop various machine learning models to detect the anomalies (defects).")
+    
+    with st.expander("4 - Model Optimization and Evaluation"):
+        st.write("- Refine our designed model to maximize accuracy and robustness.")
+        st.write("- Rigorous evaluation of model performance.")
+      
+    st.write("""This PCB defect detection project has been a dedicated effort for us, blending rigorous data 
+analysis and advanced feature engineering with the practical application of machine learning. """)
+    st.write("""Our goal was to excel in our endeavor by utilizing all available tools to successfully identify 
+and classify PCB defects.""")
+    
+
+
     
 elif page == pages[1]:
     st.write("# Data Exploration:")
