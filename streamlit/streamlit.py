@@ -14,12 +14,17 @@ from collections import Counter
 @st.cache_data
 def load_image(imageName):
     current_dir = os.getcwd()
-    image_path = os.path.join(current_dir, 'streamlit/figures', imageName)
+    image_path = os.path.join(current_dir, 'figures', imageName)
     image = Image.open(image_path)
     return image
 
-current_dir = os.getcwd()
-parent_dir = os.path.abspath(os.getcwd())
+# current_dir = os.getcwd()
+# current_dir is not needed outside the functions that define it separately inside themselves
+
+# parent_dir = os.path.abspath(os.getcwd())
+# I dont understand this. This is not the parent directory but the same as the current dir. And it does not find the image data, if parent_dir is defined this way,
+# I therefore have to change parent_dir back, otherwise the app is not running for me.
+parent_dir = os.path.abspath(os.pardir)
 image_path = os.path.abspath(os.path.join(parent_dir, 'data', 'Images_bb'))
 
 
@@ -50,7 +55,8 @@ def hide_last_line():
 
 def local_css(file_name):
     current_dir = os.getcwd()
-    file_path = os.path.join(current_dir, 'streamlit', file_name)
+    file_path = os.path.join(current_dir, file_name)
+    # deleted 'streamlit' since current_dir is already the 'streamlit' folder
     with open(file_path) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
@@ -118,9 +124,9 @@ elif page == pages[1]:
         for i, j in enumerate(rnd_2):
             img = cv2.imread(img_pool_choice[j], cv2.IMREAD_COLOR)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-            plt.subplot(2, 1, i + 1)
+            plt.subplot(1, 2, i + 1)
             plt.axis('off')
-            plt.title(f"{choice} {i + 1}")
+            plt.title(f"{choice} {i + 1}", fontsize=20)
             plt.imshow(img)
         st.pyplot(fig)
     st.write("We see that each image can have more than one defect, although in each image we only have one type of defect.")
@@ -145,49 +151,50 @@ elif page == pages[1]:
 
 elif page == pages[2]:
     st.write("# Feature Engineering")
-    local_css('expander_bold.css')
-    with st.expander("1 - Visualization of dataset"):
-        st.write("**How balanced is our dataset?**")
+    local_css('expander_medium.css')
+    st.write("### 1. Visualization of the dataset")
+    with st.expander("How balanced is our dataset?"):
         image_5 = load_image('data_balance.png')
         st.image(image_5, caption="Defect distribution", use_column_width='auto')
         st.write(" **Observations**")  
         st.write("- The dataset is relatively balanced overall.")
         st.write("- Still, this is the visualization **before** doing feature engineering to ensure model robustness.")
-        st.write("- We need to augment the data and then reavaluate the label distribution after implementing feature engineering.")
+        st.write("- We need to reevaluate the label distribution again after we performed the next steps.")
 
-    with st.expander("2 - Data Augmentation"):
-        st.write(
-"""Data preprocessing plays a crucial role in constructing effective Machine Learning models, 
-as the quality of prediction results is closely tied to the thoroughness of data preprocessing.
-Our image preprocessing pipeline involved several key steps:\n\n""")
-        st.write(
-"""- **Dimension Handling:** Reducing the image dimensions initially from RGB to Grayscale,
-and then cropping the the image to 100 x 100 grayscale images.\n""")
+    st.write("### 2. Data Augmentation")
+    with st.expander("Considerations"):
+        st.write("- Data preprocessing plays a crucial role in constructing effective Machine Learning models") 
+        st.write("- The quality of prediction results is closely tied to the thoroughness of data preprocessing")
+        st.write("- Our image preprocessing pipeline involved several key steps:")
+    with st.expander("Dimension Handling"):
+        st.write("- Reducing the image dimensions initially from RGB to Grayscale")
+        image_6 = load_image('rgb vs grayscale.png')
+        st.image(image_6, caption="Colored vs. Grayscale image", use_column_width='auto')
         
-    image_6 = load_image('rgb vs grayscale.png')
-    st.image(image_6, caption="Colored vs. Grayscale image", use_column_width='auto')
+        st.write("- Cropping the the image to 100 x 100 grayscale images")
+        st.write("- Some defects can be cut into two parts during that process")
+        st.write("- That would influence the model training")
+        image_6_1 = load_image('image_cropping.png')
+        st.image(image_6_1, caption='Image Cropping', use_column_width='auto')
 
-    st.write(
-"""\n\n- **Mask and target label:** The reference mask for the defects was generated with the help of 
-the detailed annotations provided along with the image dataset. Each bounding box coordinates were mapped onto 
-the mask image and stored in memory along with the reference training image.\n
-Besides this, the reference target labels were also generated for classification and one-hot encoded.
-We have 6 types of defects in our project.\n\n""")
 
-    st.write(
-"""- **Augmentation:** We implemented data augmentation with the help of Albumentations library.
-This unfortunatly did not cater for the the defects in the optimum way as some defects 
-on the border would be cropped out. Nor did it cater for the instances where multiple defects were
-located in one image. Hence we had to implement manual augmentation which included: \n\n""")
+    with st.expander("Mask and target label"):
+        st.write("The reference mask for the defects was generated with the help of the detailed annotations provided along with the image dataset. Each bounding box coordinates were mapped onto the mask image and stored in memory along with the reference training image.\nBesides this, the reference target labels were also generated for classification and one-hot encoded.")
+
+        image_6_2 = load_image('defect_img_vs_pm.png')
+        st.image(image_6_2, caption="Original Image vs. Pixel Mask", use_column_width='auto')
+
+    with st.expander("Augmentation"):
+        st.write("We implemented data augmentation with the help of Albumentations library. This unfortunatly did not cater for the the defects in the optimum way as some defects on the border would be cropped out. Nor did it cater for the instances where multiple defects were located in one image. Hence we had to implement manual augmentation which included:")
     
-    image_7 = load_image('albumentations.png')
-    st.image(image_7, caption="Possible augmentations by ”Albumentations", use_column_width='auto')
- 
-    image_8 = load_image('croppedimagewithmask.png')
-    st.image(image_8, caption="Cropping image and mask to 100x100 dimension", use_column_width='auto')
+        image_7 = load_image('albumentations.png')
+        st.image(image_7, caption="Possible augmentations by ”Albumentations", use_column_width='auto')
+    
+        image_8 = load_image('croppedimagewithmask.png')
+        st.image(image_8, caption="Cropping image and mask to 100x100 dimension", use_column_width='auto')
 
-    image_9 = load_image('manual augmentation.png')
-    st.image(image_9, caption="Manually implemented augmentations", use_column_width='auto')
+        image_9 = load_image('manual augmentation.png')
+        st.image(image_9, caption="Manually implemented augmentations", use_column_width='auto')
 
     st.write(
 """- ***Ensuring quality of defects:*** To keep the defects in all the cropped images intact, 
