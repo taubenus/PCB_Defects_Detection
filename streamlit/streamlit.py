@@ -14,17 +14,18 @@ from collections import Counter
 @st.cache_data
 def load_image(imageName):
     current_dir = os.getcwd()
-    image_path = os.path.join(current_dir, 'figures', imageName)
+    image_path = os.path.join(current_dir, 'streamlit', 'figures', imageName) # for Streamlit->Github
+    #image_path = os.path.join(current_dir, 'figures', imageName)
     image = Image.open(image_path)
     return image
 
 # current_dir = os.getcwd()
 # current_dir is not needed outside the functions that define it separately inside themselves
 
-# parent_dir = os.path.abspath(os.getcwd())
+parent_dir = os.path.abspath(os.getcwd()) # for Streamlit->Github
+#parent_dir = os.path.abspath(os.pardir)
 # I dont understand this. This is not the parent directory but the same as the current dir. And it does not find the image data, if parent_dir is defined this way,
 # I therefore have to change parent_dir back, otherwise the app is not running for me.
-parent_dir = os.path.abspath(os.pardir)
 image_path = os.path.abspath(os.path.join(parent_dir, 'data', 'Images_bb'))
 
 
@@ -61,7 +62,8 @@ def local_css(file_name):
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 if page == pages[0]:
-    st.html("<h1 style='text-align: center'>Detection and Classification of Defects on Printed Circuit Boards (PCBs) </hr> with Machine Learning</h1>")
+    st.write('# Detection and Classification of Defects on Printed Circuit Boards (PCBs)')
+    #st.html("<h1 style='text-align: center'>Detection and Classification of Defects on Printed Circuit Boards (PCBs) </hr> with Machine Learning</h1>")
     local_css("expander_bold.css")
     with st.expander("Introduction", expanded=False):
         st.write("- This project explores various machine learning methodologies for detecting and classifying defects on PCBs, using advanced computer vision techniques")
