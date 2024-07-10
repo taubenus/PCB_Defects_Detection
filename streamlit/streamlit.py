@@ -1,4 +1,5 @@
 import streamlit as st
+from streamlit_image_zoom import image_zoom
 import os
 import cv2
 from PIL import Image
@@ -18,9 +19,6 @@ def load_image(imageName):
     #image_path = os.path.join(current_dir, 'figures', imageName)
     image = Image.open(image_path)
     return image
-
-# current_dir = os.getcwd()
-# current_dir is not needed outside the functions that define it separately inside themselves
 
 parent_dir = os.path.abspath(os.getcwd()) # for Streamlit->Github
 #parent_dir = os.path.abspath(os.pardir)
@@ -56,8 +54,8 @@ def hide_last_line():
 
 def local_css(file_name):
     current_dir = os.getcwd()
-    file_path = os.path.join(current_dir, 'streamlit', file_name)
-    # deleted 'streamlit' since current_dir is already the 'streamlit' folder
+    file_path = os.path.join(current_dir, 'streamlit', file_name) # for Streamlit->Github
+    #file_path = os.path.join(current_dir, file_name)
     with open(file_path) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
@@ -77,7 +75,6 @@ if page == pages[0]:
     st.image(image_1, caption="Typical 2 layer PCB", use_column_width='auto')
 
     st.write("### Project Phases")
-    #st.write("""The project encompassed several key stages of a rigorous data science methodology. We will cover these aspects of our Data Science project in detail, including:""")
     with st.expander("1 - Data Exploration", expanded=False):
         st.write("- Explore the dataset to understand its structure, features, and potential pitfalls.")
         st.write("- Use data visualization to identify key insights and relevance.")
@@ -159,68 +156,63 @@ elif page == pages[2]:
         image_5 = load_image('data_balance.png')
         st.image(image_5, caption="Defect distribution", use_column_width='auto')
         st.write(" **Observations**")  
-        st.write("- The dataset is relatively balanced overall.")
-        st.write("- Still, this is the visualization **before** doing feature engineering to ensure model robustness.")
-        st.write("- We need to reevaluate the label distribution again after we performed the next steps.")
+        st.write("- The dataset is relatively balanced overall")
+        st.write("- Still, this is the visualization **before** doing feature engineering to ensure model robustness")
+        st.write("- For model training we randomly generate a balanced dataset after performing the next preprocessing steps")
 
-    st.write("### 2. Data Augmentation")
-    with st.expander("Considerations"):
-        st.write("- Data preprocessing plays a crucial role in constructing effective Machine Learning models") 
-        st.write("- The quality of prediction results is closely tied to the thoroughness of data preprocessing")
-        st.write("- Our image preprocessing pipeline involved several key steps:")
+    st.write("### 2. Data Preprocessing")
+    st.write("- Data preprocessing plays a crucial role in constructing effective Machine Learning models") 
+    st.write("- The quality of prediction results is closely tied to the thoroughness of data preprocessing")
+    st.write("- Our image preprocessing pipeline involved several key steps:")
     with st.expander("Dimension Handling"):
         st.write("- Reducing the image dimensions initially from RGB to Grayscale")
         image_6 = load_image('rgb vs grayscale.png')
         st.image(image_6, caption="Colored vs. Grayscale image", use_column_width='auto')
         
         st.write("- Cropping the the image to 100 x 100 grayscale images")
-        st.write("- Some defects can be cut into two parts during that process")
-        st.write("- That would influence the model training")
         image_6_1 = load_image('image_cropping.png')
         st.image(image_6_1, caption='Image Cropping', use_column_width='auto')
+        st.write("- Some defects can be cut into two parts during that process")
+        st.write("- That would influence the model training")
 
+        image_8 = load_image('croppedimagewithmask.png')
+        st.image(image_8, caption="Cropping image and mask to 100x100 dimension", use_column_width='auto')
 
-    with st.expander("Mask and target label"):
-        st.write("The reference mask for the defects was generated with the help of the detailed annotations provided along with the image dataset. Each bounding box coordinates were mapped onto the mask image and stored in memory along with the reference training image.\nBesides this, the reference target labels were also generated for classification and one-hot encoded.")
+    with st.expander("Mask and Target Label"):
+        st.write("- The dataset comes along with an xml file annotating for each image the bounding box of each defect and its type")
+        st.write("- From the xml, for each image the pixel mask could be created with the same shape as the original image")
 
         image_6_2 = load_image('defect_img_vs_pm.png')
         st.image(image_6_2, caption="Original Image vs. Pixel Mask", use_column_width='auto')
 
+        st.write("- Those Pixel Masks will will become one of two labels for our model")
+        st.write("- The second label will be the defect type")
+
     with st.expander("Augmentation"):
-        st.write("We implemented data augmentation with the help of Albumentations library. This unfortunatly did not cater for the the defects in the optimum way as some defects on the border would be cropped out. Nor did it cater for the instances where multiple defects were located in one image. Hence we had to implement manual augmentation which included:")
+        #st.write("We implemented data augmentation with the help of Albumentations library. This unfortunatly did not cater for the the defects in the optimum way as some defects on the border would be cropped out. Nor did it cater for the instances where multiple defects were located in one image. Hence we had to implement manual augmentation which included:")
     
-        image_7 = load_image('albumentations.png')
-        st.image(image_7, caption="Possible augmentations by ”Albumentations", use_column_width='auto')
-    
-        image_8 = load_image('croppedimagewithmask.png')
-        st.image(image_8, caption="Cropping image and mask to 100x100 dimension", use_column_width='auto')
+        #image_7 = load_image('albumentations.png')
+        #st.image(image_7, caption="Possible augmentations by ”Albumentations", use_column_width='auto')
+
+        st.write("- We considered some ready-to-use image augmentation solutions like Image-Data-Generator or Albumentations")
+        st.write("- For several reasons those have not been adequate for our dataset and our goal")
+        st.write("- Hence we had to implement manual augmentations:")
 
         image_9 = load_image('manual augmentation.png')
         st.image(image_9, caption="Manually implemented augmentations", use_column_width='auto')
 
-    st.write(
-"""- ***Ensuring quality of defects:*** To keep the defects in all the cropped images intact, 
-we had to implement a check function for border and defect control. This included a function to ensure 
-that there were only single defects in one image, i.e. separation of images by duplication.""")
-
-    new_width = 400
-    image_10 = load_image('separated_img1.png')
-    image_10 = image_10.resize((new_width, int((new_width / image_10.width) * image_10.height)))
-    st.image(image_10, use_column_width='auto')
-    image_11 = load_image('separated_img2.png')
-    image_11 = image_10.resize((new_width, int((new_width / image_11.width) * image_11.height)))
-    st.image(image_11, use_column_width='auto')
-    image_12 = load_image('separated_img3.png')
-    image_12 = image_12.resize((new_width, int((new_width / image_12.width) * image_12.height)))
-    st.image(image_12, caption="Manually implemented defect separation", use_column_width='auto')
-
-    st.write(
-"""- **Randomization of dataset:** We implemented random; but defect class-wise balanced; 
-dataset selection so that we could avoid training baises.""")
-
-    st.write(
-"""Once we managed to implement the above mentioned feature engineering aspects, we could 
-get on with the next step of Model architecture design and training.""")
+    with st.expander("Separation of Multiple Defects"):
+        st.write("- For model training we separated multiple defects in one cropped image by image duplication")
+        new_width = 400
+        image_10 = load_image('separated_img1.png')
+        image_10 = image_10.resize((new_width, int((new_width / image_10.width) * image_10.height)))
+        st.image(image_10, use_column_width='auto')
+        image_11 = load_image('separated_img2.png')
+        image_11 = image_10.resize((new_width, int((new_width / image_11.width) * image_11.height)))
+        st.image(image_11, use_column_width='auto')
+        image_12 = load_image('separated_img3.png')
+        image_12 = image_12.resize((new_width, int((new_width / image_12.width) * image_12.height)))
+        st.image(image_12, caption="Manually implemented defect separation", use_column_width='auto')
     
 elif page == pages[3]:
 
@@ -243,8 +235,8 @@ image classification tasks.""")
              design iterations to finally decide on the RES-UNET model scheme.""")
     
     image_13 = load_image('RESUNET_architecture.png')
-    st.image(image_13, caption="RES-UNET model with Segmentation and Classification outputs", 
-             use_column_width='auto')
+    image_zoom(image_13, size=700, zoom_factor=2.5)
+    #st.image(image_13, caption="RES-UNET model with Segmentation and Classification outputs", use_column_width='auto')
 
     st.write("##### 3. YOLOv5")
 
