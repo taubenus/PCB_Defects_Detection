@@ -56,7 +56,7 @@ def hide_last_line():
 
 def local_css(file_name):
     current_dir = os.getcwd()
-    file_path = os.path.join(current_dir, file_name)
+    file_path = os.path.join(current_dir, 'streamlit', file_name)
     # deleted 'streamlit' since current_dir is already the 'streamlit' folder
     with open(file_path) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
