@@ -12,6 +12,7 @@ from keras.models import load_model
 from sklearn.metrics import classification_report
 from collections import Counter
 
+import time
 from prediction_resnet import process_image
 
 current_script_directory = os.path.dirname(os.path.abspath(__file__))
