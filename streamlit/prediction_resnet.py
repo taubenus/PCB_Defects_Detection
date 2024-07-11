@@ -15,7 +15,7 @@ image_dest_path = os.path.join(parent_dir, 'data', 'Images')
 annot_dest_path = os.path.join(parent_dir, 'data', 'Annotations')
 
 # Define the path for RES_UNET model
-model_loc = os.path.join(working_path, 'notebooks', 'models')
+model_loc = os.path.join(parent_dir, 'notebooks', 'models')
 
 # Load the model
 from tensorflow.keras.models import load_model
