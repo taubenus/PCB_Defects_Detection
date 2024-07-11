@@ -148,8 +148,8 @@ def process_image(num, test_img):
             predicted_label = np.argmax(y_class, axis=1)
             remapped_label = [class_labels_pred[label] for label in predicted_label]
 
-            X_test_combined = combine_crops(crops, crop_size, cropped_image.shape[:2])
-            y_mask_pred_combined = combine_crops(y_pred.squeeze(), crop_size, cropped_image.shape[:2])
+            X_test_combined = combine_crops(crops, crop_size, image_test.shape[:2])
+            y_mask_pred_combined = combine_crops(y_pred.squeeze(), crop_size, image_test.shape[:2])
 
             normalized_image = cv2.normalize(y_mask_pred_combined, 5, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
             normalized_image = np.uint8(normalized_image)
@@ -162,7 +162,7 @@ def process_image(num, test_img):
   
             filtered_contours, bounding_boxes = detect_and_filter_contours(thresh, min_contour_area, max_contour_area)
 
-            output_image = draw_contours(cropped_image, normalized_image, filtered_contours)
+            output_image = draw_contours(image_test, normalized_image, filtered_contours)
 
             if num == 1:
                 return output_image, len(filtered_contours)
