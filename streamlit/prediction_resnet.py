@@ -4,7 +4,7 @@ import numpy as np
 import cv2
 import matplotlib.pyplot as plt
 from PIL import Image
-
+from tensorflow.keras.models import load_model
 from tensorflow.keras.metrics import Recall, Precision, MeanAbsoluteError, MeanIoU
 
 current_script_directory = os.path.dirname(os.path.abspath(__file__))
@@ -21,7 +21,6 @@ annot_dest_path = os.path.join(parent_dir, 'data', 'Annotations')
 model_loc = os.path.join(parent_dir, 'notebooks', 'models')
 
 # Load the model
-from tensorflow.keras.models import load_model
 model_path = os.path.join(model_loc, 'model_enhanced_res_unet-v240618_3.keras')
 
 model = load_model(model_path, custom_objects={
