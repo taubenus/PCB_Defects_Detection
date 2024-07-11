@@ -222,7 +222,7 @@ def process_image(num, test_img):
 
                 text_size = cv2.getTextSize(class_label, cv2.FONT_HERSHEY_SIMPLEX, font_scale, thickness)[0]
                 text_bg_size = (text_size[0] + 10, text_size[1] + 10)
-                cv2.rectangle(output_image, (x, y + h), (x_new + text_bg_size[0], y + h + text_bg_size[1]), (255, 0, 0), -1) 
+                cv2.rectangle(output_image, (x, y + h), (x + text_bg_size[0], y + h + text_bg_size[1]), (255, 0, 0), -1) 
 
                 # putting text (class label) below the bounding box
                 cv2.putText(output_image, str(class_label), (x, y + h + text_size[1]), cv2.FONT_HERSHEY_SIMPLEX, font_scale, (255, 255, 255), thickness)
