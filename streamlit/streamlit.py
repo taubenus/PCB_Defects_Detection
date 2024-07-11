@@ -310,7 +310,6 @@ elif page == pages[5]:
         st.session_state.unique_filename = None
     with tab1:
         # select test image 
-        test_source == 'Use a pre-loaded test image':
         test_option = st.selectbox('Choose from different test samples', 
                                        options=(1, 2, 3, 4, 5, 6, 7, 8, 9))
         test_selection = test_options[test_option-1]
