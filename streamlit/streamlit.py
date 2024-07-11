@@ -37,11 +37,11 @@ image_path = os.path.abspath(os.path.join(parent_dir, 'data', 'Images_bb'))
 
 st.sidebar.title("Table of contents")
 pages = ["Project Introduction", "Data Exploration", "Feature Engineering", "Model Training", 
-         "Model Optimization and Evaluation", "Model Inference"
+         "Model Optimization and Evaluation", "Model Inference",
          "Authors"]
 page = st.sidebar.radio("Go to", pages)
 
-#st.sidebar.header(pages[5])
+#st.sidebar.header(pages[6])
 st.sidebar.markdown("[*Faiza Waheed*](https://github.com/wfaiza/)")
 st.sidebar.markdown("[*Niels Hartanto*](https://github.com/taubenus/)")
 st.sidebar.markdown("[*Gernot Gellwitz*](https://github.com/Kathartikon/)")
