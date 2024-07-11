@@ -12,26 +12,32 @@ from keras.models import load_model
 from sklearn.metrics import classification_report
 from collections import Counter
 
+from prediction_resnet import process_image
+
+current_script_directory = os.path.dirname(os.path.abspath(__file__))
+os.chdir(current_script_directory)
+
 @st.cache_data
 def load_image(imageName):
     current_dir = os.getcwd()
-    image_path = os.path.join(current_dir, 'streamlit', 'figures', imageName) # for Streamlit->Github
-    #image_path = os.path.join(current_dir, 'figures', imageName)
+    #image_path = os.path.join(current_dir, 'streamlit', 'figures', imageName) # for Streamlit->Github
+# trying something so that we dont need different initializations for the directories.
+    image_path = os.path.join(current_dir, 'figures', imageName)
     image = Image.open(image_path)
     return image
 
-parent_dir = os.path.abspath(os.getcwd()) # for Streamlit->Github
-#parent_dir = os.path.abspath(os.pardir)
+#parent_dir = os.path.abspath(os.getcwd()) # for Streamlit->Github
+# trying something so that we dont need different initializations for the directories.
+parent_dir = os.path.abspath(os.pardir)
 # I dont understand this. This is not the parent directory but the same as the current dir. And it does not find the image data, if parent_dir is defined this way,
 # I therefore have to change parent_dir back, otherwise the app is not running for me.
 image_path = os.path.abspath(os.path.join(parent_dir, 'data', 'Images_bb'))
-
 
 #st.set_page_config(layout="wide", page_title="My Streamlit App")
 
 st.sidebar.title("Table of contents")
 pages = ["Project Introduction", "Data Exploration", "Feature Engineering", "Model Training", 
-         "Model Optimization and Evaluation", 
+         "Model Optimization and Evaluation", "Model Inference"
          "Authors"]
 page = st.sidebar.radio("Go to", pages)
 
@@ -54,8 +60,9 @@ def hide_last_line():
 
 def local_css(file_name):
     current_dir = os.getcwd()
-    file_path = os.path.join(current_dir, 'streamlit', file_name) # for Streamlit->Github
-    #file_path = os.path.join(current_dir, file_name)
+    #file_path = os.path.join(current_dir, 'streamlit', file_name) # for Streamlit->Github
+# trying something so that we dont need different initializations for the directories.
+    file_path = os.path.join(current_dir, file_name)
     with open(file_path) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
@@ -285,7 +292,71 @@ elif page == pages[4]:
              use_column_width='auto')
          
 
+#model inference
 elif page == pages[5]:
+    st.write("# Model Inference")
+    st.write("""Now that we have found our efficient model, let's determine if we can predict the defects 
+             accurately. The model inference can be run on pre-loaded test images.""")
+	#i am working on uploading various images for testing
+    
+    test_options = ["test_image_1.jpg", "test_image_2.jpg", "test_image_3.jpg",
+                    "test_image_4.jpg", "test_image_5.jpg", "test_image_6.jpg",
+                    "test_image_7.jpg", "test_image_8.jpg", "test_image_9.jpg"]
+    
+    tab1, tab2, tab3 = st.tabs(["Initialize Test Image", "Defect Detection", "Details"])
+    uploaded_selection = None
+    test_selection = None
+    if 'unique_filename' not in st.session_state:
+        st.session_state.unique_filename = None
+    with tab1:
+        # select test image 
+        test_source == 'Use a pre-loaded test image':
+        test_option = st.selectbox('Choose from different test samples', 
+                                       options=(1, 2, 3, 4, 5, 6, 7, 8, 9))
+        test_selection = test_options[test_option-1]
+        disp_test_selection = load_image(test_selection)
+        st.image(disp_test_selection, caption="Selected Test Image", width=700)
+
+        if st.session_state.unique_filename is not None:
+            uploaded_image_path = os.path.join(current_dir, 'figures', st.session_state.unique_filename)
+            remove_uploaded_image(uploaded_image_path)
+            st.session_state.unique_filename = None
+        
+        # on_click of predict button
+        if st.button('View mask prediction', key='show_mask'):
+            with st.spinner('Wait for a few seconds...'):
+                time.sleep(2)
+            # run image processing pipeline
+            image, num_defects = process_image(1, test_img=('./figures/'+test_selection))
+            st.image(image,
+                    caption=None, width=700
+            )
+            st.write("Number of masks detected: ", num_defects)
+            st.success('Finished mask prediction.')
+    
+    with tab2:
+        st.write("Classifying and drawing bounding boxes around defects on the original image.")
+        if (test_selection is not None):
+            disp_test_selection = load_image(test_selection)
+            st.image(disp_test_selection, caption="Selected Test Image", width=700)
+            # predicttion on_click of button
+            if st.button('Show defects', key='show_defects_model'):
+                with st.spinner('Wait for a few seconds...'):
+                    time.sleep(2)
+                # run image processing pipeline
+                image, num_defects = process_image(2, test_img=('./figures/'+test_selection))
+                st.image(image,
+                        caption=None, width=700
+                )
+                st.write("Number of defects detected: ", num_defects)
+                st.success('Finished defects localisation and classification.')
+
+    with tab3:
+        st.write("**For more details, please goto the project Github Repository**")
+        st.write("(https://github.com/wfaiza/PCB_Defects_Detection/)")
+
+
+elif page == pages[6]:
     #image_faiza = load_image('faiza.png')
     #st.image(image_faiza, use_column_width=200)
     st.write("### Faiza Waheed") 
