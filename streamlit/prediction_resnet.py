@@ -7,6 +7,9 @@ from PIL import Image
 
 from tensorflow.keras.metrics import Recall, Precision, MeanAbsoluteError, MeanIoU
 
+current_script_directory = os.path.dirname(os.path.abspath(__file__))
+os.chdir(current_script_directory)
+
 current_dir = os.getcwd()
 parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
 
