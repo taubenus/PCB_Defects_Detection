@@ -5,6 +5,7 @@ matplotlib-inline
 numpy
 opencv-python-headless
 pandas
+pdf2image
 pillow
 pipreqs
 requests
