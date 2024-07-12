@@ -1,5 +1,5 @@
 import streamlit as st
-#from streamlit_image_zoom import image_zoom
+from streamlit_image_zoom import image_zoom
 import os
 import cv2
 from PIL import Image
@@ -9,67 +9,51 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 from keras.models import load_model
-from sklearn.metrics import classification_report
+#from sklearn.metrics import classification_report
 from collections import Counter
 
 import time
+import pdf2image
+from pdf2image import convert_from_bytes
 from prediction_resnet import process_image
 
 current_script_directory = os.path.dirname(os.path.abspath(__file__))
 os.chdir(current_script_directory)
 
+parent_dir = os.path.abspath(os.pardir)
+image_path = os.path.abspath(os.path.join(parent_dir, 'data', 'Images_bb'))
+
 @st.cache_data
 def load_image(imageName):
     current_dir = os.getcwd()
-    #image_path = os.path.join(current_dir, 'streamlit', 'figures', imageName) # for Streamlit->Github
-# trying something so that we dont need different initializations for the directories.
     image_path = os.path.join(current_dir, 'figures', imageName)
     image = Image.open(image_path)
     return image
 
-#parent_dir = os.path.abspath(os.getcwd()) # for Streamlit->Github
-# trying something so that we dont need different initializations for the directories.
-parent_dir = os.path.abspath(os.pardir)
-# I dont understand this. This is not the parent directory but the same as the current dir. And it does not find the image data, if parent_dir is defined this way,
-# I therefore have to change parent_dir back, otherwise the app is not running for me.
-image_path = os.path.abspath(os.path.join(parent_dir, 'data', 'Images_bb'))
-
-#st.set_page_config(layout="wide", page_title="My Streamlit App")
-
 st.sidebar.title("Table of contents")
 pages = ["Project Introduction", "Data Exploration", "Feature Engineering", "Model Training", 
-         "Model Optimization and Evaluation", "Model Inference",
-         "Authors"]
+         "Model Optimization and Evaluation", "Model Inference" #, "Authors"
+         ]
 page = st.sidebar.radio("Go to", pages)
 
-#st.sidebar.header(pages[6])
+st.sidebar.header("Authors")
 st.sidebar.markdown("[*Faiza Waheed*](https://github.com/wfaiza/)")
 st.sidebar.markdown("[*Niels Hartanto*](https://github.com/taubenus/)")
 st.sidebar.markdown("[*Gernot Gellwitz*](https://github.com/Kathartikon/)")
 
-if 'line_index' not in st.session_state:
-    st.session_state.line_index = 0
+if 'unique_filename' not in st.session_state:
+    st.session_state.unique_filename = None
 
-# Function to reveal the next line
-def reveal_next_line(text_lines):
-    if st.session_state.line_index < len(text_lines):
-        st.session_state.line_index += 1
-
-def hide_last_line():
-    if st.session_state.line_index > 0:
-        st.session_state.line_index -= 1
-
+@st.cache_data
 def local_css(file_name):
     current_dir = os.getcwd()
-    #file_path = os.path.join(current_dir, 'streamlit', file_name) # for Streamlit->Github
-# trying something so that we dont need different initializations for the directories.
     file_path = os.path.join(current_dir, file_name)
     with open(file_path) as f:
         st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 if page == pages[0]:
-    st.write('# Detection and Classification of Defects on Printed Circuit Boards (PCBs)')
-    #st.html("<h1 style='text-align: center'>Detection and Classification of Defects on Printed Circuit Boards (PCBs) </hr> with Machine Learning</h1>")
+    #st.write('# Detection and Classification of Defects on Printed Circuit Boards (PCBs)')
+    st.html("<h1 style='text-align: center'>Detection and Classification of Defects on Printed Circuit Boards (PCBs) </hr> with Machine Learning</h1>")
     local_css("expander_bold.css")
     with st.expander("Introduction", expanded=False):
         st.write("- This project explores various machine learning methodologies for detecting and classifying defects on PCBs, using advanced computer vision techniques")
@@ -143,13 +127,6 @@ elif page == pages[1]:
 		
 		
     st.write("### Is there a possibilty to minimize the features?")
-    #st.write("""Let's inspect the images from the dataset: \n""")
-
-    #image_4 = load_image('Annotated_defects.png')
-    #st.image(image_4, caption="Sample image from the PCB dataset with annotated defects", 
-    #         width=400)
-    
-    # sample checkbox for superimposed images
     with st.expander('View superimposed dataset images', expanded=False):
         image_4a = load_image("superimposed_image.png")
         st.image(image_4a, caption='All the training images superimposed together', width=500)
@@ -197,11 +174,6 @@ elif page == pages[2]:
         st.write("- The second label will be the defect type")
 
     with st.expander("Augmentation"):
-        #st.write("We implemented data augmentation with the help of Albumentations library. This unfortunatly did not cater for the the defects in the optimum way as some defects on the border would be cropped out. Nor did it cater for the instances where multiple defects were located in one image. Hence we had to implement manual augmentation which included:")
-    
-        #image_7 = load_image('albumentations.png')
-        #st.image(image_7, caption="Possible augmentations by ”Albumentations", use_column_width='auto')
-
         st.write("- We considered some ready-to-use image augmentation solutions like Image-Data-Generator or Albumentations")
         st.write("- For several reasons those have not been adequate for our dataset and our goal")
         st.write("- Hence we had to implement manual augmentations:")
@@ -241,9 +213,12 @@ image classification tasks.""")
 
     st.write("""For the development and implementation of our machine learning model, we went through many 
              design iterations to finally decide on the RES-UNET model scheme.""")
-    
-    image_13 = load_image('RESUNET_architecture.png')
-    #image_zoom(image_13, size=700, zoom_factor=2.5)
+    #image_13 = pdf2image.convert_from_bytes("pcb-resunet-model.pdf")
+    pdf_bytes = open("figures\pcb-resunet-model.pdf", "rb").read()
+    images = convert_from_bytes(pdf_bytes)
+    image_13 = images[0]
+    #image_13 = image_zoom(image_13, size=700, zoom_factor=2.5)
+    #image_13 = load_image('RESUNET_architecture.png')
     st.image(image_13, caption="RES-UNET model with Segmentation and Classification outputs", use_column_width='auto')
 
     st.write("##### 3. YOLOv5")
@@ -300,28 +275,27 @@ elif page == pages[5]:
              accurately. The model inference can be run on pre-loaded test images.""")
 	#i am working on uploading various images for testing
     
-    test_options = ["test_image_1.jpg", "test_image_2.jpg", "test_image_3.jpg",
+    test_options = ["No Selection", "test_image_1.jpg", "test_image_2.jpg", "test_image_3.jpg",
                     "test_image_4.jpg", "test_image_5.jpg", "test_image_6.jpg",
                     "test_image_7.jpg", "test_image_8.jpg", "test_image_9.jpg"]
     
     tab1, tab2, tab3 = st.tabs(["Initialize Test Image", "Defect Detection", "Details"])
     uploaded_selection = None
     test_selection = None
-    if 'unique_filename' not in st.session_state:
-        st.session_state.unique_filename = None
+    
     with tab1:
         # select test image 
         test_option = st.selectbox('Choose from different test samples', 
-                                       options=(1, 2, 3, 4, 5, 6, 7, 8, 9))
-        test_selection = test_options[test_option-1]
-        disp_test_selection = load_image(test_selection)
-        st.image(disp_test_selection, caption="Selected Test Image", width=700)
+                                   options=range(len(test_options)),
+                                   format_func=lambda x: test_options[x])
+        if test_option != 0:
+            test_selection = test_options[test_option]
+            disp_test_selection = load_image(test_selection)
+            if disp_test_selection is not None:
+                st.image(disp_test_selection, caption="Selected Test Image", width=700)
+            else:
+                st.write("No image loaded for selection.")
 
-        if st.session_state.unique_filename is not None:
-            uploaded_image_path = os.path.join(current_dir, 'figures', st.session_state.unique_filename)
-            remove_uploaded_image(uploaded_image_path)
-            st.session_state.unique_filename = None
-        
         # on_click of predict button
         if st.button('View mask prediction', key='show_mask'):
             with st.spinner('Wait for a few seconds...'):
@@ -333,7 +307,7 @@ elif page == pages[5]:
             )
             st.write("Number of masks detected: ", num_defects)
             st.success('Finished mask prediction.')
-    
+   
     with tab2:
         st.write("Classifying and drawing bounding boxes around defects on the original image.")
         if (test_selection is not None):
@@ -354,27 +328,4 @@ elif page == pages[5]:
     with tab3:
         st.write("**For more details, please goto the project Github Repository**")
         st.write("(https://github.com/wfaiza/PCB_Defects_Detection/)")
-
-
-elif page == pages[6]:
-    #image_faiza = load_image('faiza.png')
-    #st.image(image_faiza, use_column_width=200)
-    st.write("### Faiza Waheed") 
-    st.write("""*I am a Communications Engineer with three years of experience as an 
-             Instrumentation and Control Systems Engineer. I furthered my education in Germany, 
-             earning a Master's Degree in Communications Electronics from the Technical University of Munich. 
-             My career then led me to roles as a Testing Engineer at Intel and a Chip Development Engineer 
-             at Infineon.*""")
-    st.write("""*I am now eager to transition into a dynamic and competitive work environment in Data Science. 
-             This career shift represents a new chapter in my unconventional journey, and I look forward 
-             to embracing new opportunities and overcoming the challenges ahead.*""")
-
-    #image_niels = load_image('niels.png')
-    #st.image(image_niels, use_column_width=200)
-    st.write("### Niels Hartano") 
-    st.write("""*Enter Niels' background and motivation here.*""")
-    
-    #image_gernot = load_image('gernot.png')
-    #st.image(image_gernot, use_column_width=200)
-    st.write("### Gernot Gellwitz") 
-    st.write("""*Enter Gernot's background and motivation here.*""")
+        
