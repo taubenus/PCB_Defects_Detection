@@ -276,7 +276,7 @@ elif page == pages[5]:
              accurately. The model inference can be run on pre-loaded test images.""")
 	#i am working on uploading various images for testing
     
-    test_options = ["No Selection", "test_image_1.jpg", "test_image_2.jpg", "test_image_3.jpg",
+    test_options = ["test_image_1.jpg", "test_image_2.jpg", "test_image_3.jpg",
                     "test_image_4.jpg", "test_image_5.jpg", "test_image_6.jpg",
                     "test_image_7.jpg", "test_image_8.jpg", "test_image_9.jpg"]
     
@@ -287,15 +287,16 @@ elif page == pages[5]:
     with tab1:
         # select test image 
         test_option = st.selectbox('Choose from different test samples', 
-                                   options=range(len(test_options)),
-                                   format_func=lambda x: test_options[x])
-        if test_option != 0:
-            test_selection = test_options[test_option]
-            disp_test_selection = load_image(test_selection)
-            if disp_test_selection is not None:
-                st.image(disp_test_selection, caption="Selected Test Image", width=700)
-            else:
-                st.write("No image loaded for selection.")
+                                       options=(1, 2, 3, 4, 5, 6, 7, 8, 9))
+        test_selection = test_options[test_option-1]
+        disp_test_selection = load_image(test_selection)
+        st.image(disp_test_selection, caption="Selected Test Image", width=700)
+            #test_selection = test_options[test_option]
+            #disp_test_selection = load_image(test_selection)
+            #if disp_test_selection is not None:
+            #    st.image(disp_test_selection, caption="Selected Test Image", width=700)
+            #else:
+            #    st.write("No image loaded for selection.")
 
         # on_click of predict button
         if st.button('View mask prediction', key='show_mask'):
