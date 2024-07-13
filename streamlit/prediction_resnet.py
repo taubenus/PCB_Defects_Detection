@@ -212,8 +212,8 @@ def process_image(num, test_img):
             # preprocess the image
             thresh = preprocess_image(normalized_image)
 
-            #min_contour_area = 150  
-            #max_contour_area = 1000  
+            min_contour_area = 150  
+            max_contour_area = 1000  
             
             total_area = target_height * target_width
             if total_area > 2100000:
@@ -232,7 +232,7 @@ def process_image(num, test_img):
                     min_contour_area = total_area * 0.00007
                     max_contour_area = total_area * 0.0015
             elif 800000 < total_area <= 1200000:
-                min_contour_area = total_area * 0.00022
+                min_contour_area = total_area * 0.00027
                 max_contour_area = total_area * 0.0018 #0.0007
             elif 400000 < total_area <= 800000:
                 min_contour_area = total_area * 0.00045  # was 0.0005
