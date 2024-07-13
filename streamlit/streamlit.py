@@ -214,7 +214,8 @@ image classification tasks.""")
     st.write("""For the development and implementation of our machine learning model, we went through many 
              design iterations to finally decide on the RES-UNET model scheme.""")
     #image_13 = pdf2image.convert_from_bytes("pcb-resunet-model.pdf")
-    pdf_bytes = open("figures\pcb-resunet-model.pdf", "rb").read()
+    pdf_path = os.path.join(current_dir, 'figures', 'pcb-resunet-model.pdf')
+    pdf_bytes = open(pdf_path, "rb").read()
     images = convert_from_bytes(pdf_bytes)
     image_13 = images[0]
     #image_13 = image_zoom(image_13, size=700, zoom_factor=2.5)
