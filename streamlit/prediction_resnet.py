@@ -135,21 +135,76 @@ def process_image(num, test_img):
     if test_img:
         
         image_test = cv2.imread(test_img)
-        image_test = cv2.resize(image_test, (600, 600))
+        #image_test = cv2.resize(image_test, (600, 600))
+        #image = Image.open(test_img)
+        #image_test = np.array(image)
 
         if image_test is not None:
             crop_size = (100,100)
+
+            image_yuv = cv2.cvtColor(image_test, cv2.COLOR_BGR2YUV)
+            avg_brightness = np.mean(image_yuv[:, :, 0])
+            print("avg_brightness 1:", avg_brightness)
+            brightness_threshold = 65
+            if avg_brightness < brightness_threshold:
+                cliplimit = round(130 / avg_brightness, 1) #+ 0.2
+                print(cliplimit)
+                clahe = cv2.createCLAHE(clipLimit=cliplimit, tileGridSize=(10, 10))
+                image_yuv[:, :, 0] = clahe.apply(image_yuv[:, :, 0])
+                avg_brightness = np.mean(image_yuv[:, :, 0])
+                print("avg_brightness 2:", avg_brightness)
+
+            image_test = cv2.cvtColor(image_yuv, cv2.COLOR_YUV2BGR)
             #print(f"Original image size: {image_test.shape[:2]}")
             height, width = image_test.shape[:2]
-            gray_image = cv2.cvtColor(image_test, cv2.COLOR_BGR2GRAY)
+            max_dimension = 1200
+            check = max(height,width)
+            if check > 3000:
+                max_dimension = 1900
+            #elif 3000 >= check > 2000 :
+            #    max_dimension = 1200
+            scaling_factor = min(max_dimension / height, max_dimension / width)
+            if scaling_factor < 1:
+                new_dimensions = (int(width * scaling_factor), int(height * scaling_factor))
+                image_test = cv2.resize(image_test, new_dimensions, interpolation=cv2.INTER_AREA)
+
+            height, width = image_test.shape[:2]
+
+            target_height = round((height + 25) / 100) * 100
+            target_width = round((width + 25) / 100) * 100
+    
+            top_crop = max(0, (height - target_height) // 2)
+            bottom_crop = top_crop + target_height
+            left_crop = max(0, (width - target_width) // 2)
+            right_crop = left_crop + target_width
+    
+            cropped_image = image_test[top_crop:bottom_crop, left_crop:right_crop]
+            #cropped_image = np.array(cropped_image)
+            pad_left = 0
+            pad_top = 0
+            if cropped_image.shape[0] != target_height or cropped_image.shape[1] != target_width:
+                pad_top = max(0, (target_height - cropped_image.shape[0]) // 2)
+                pad_bottom = max(0, target_height - cropped_image.shape[0] - pad_top)
+                pad_left = max(0, (target_width - cropped_image.shape[1]) // 2)
+                pad_right = max(0, target_width - cropped_image.shape[1] - pad_left)
+                
+                cropped_image = np.pad(cropped_image, ((pad_top, pad_bottom), (pad_left, pad_right), (0, 0)), mode='constant')
+        
+            print(f"Cropped and padded image size: {cropped_image.shape[:2]}")
+            
+            gray_image = cv2.cvtColor(cropped_image, cv2.COLOR_BGR2GRAY)
+
             image_array_test = np.asarray(gray_image) / 255.0
+
             crops = np.asarray(crop_image(image_array_test, crop_size))
+
             y_pred, y_class = model.predict(crops)
+
             predicted_label = np.argmax(y_class, axis=1)
             remapped_label = [class_labels_pred[label] for label in predicted_label]
 
-            X_test_combined = combine_crops(crops, crop_size, image_test.shape[:2])
-            y_mask_pred_combined = combine_crops(y_pred.squeeze(), crop_size, image_test.shape[:2])
+            X_test_combined = combine_crops(crops, crop_size, cropped_image.shape[:2])
+            y_mask_pred_combined = combine_crops(y_pred.squeeze(), crop_size, cropped_image.shape[:2])
 
             normalized_image = cv2.normalize(y_mask_pred_combined, 5, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
             normalized_image = np.uint8(normalized_image)
@@ -157,12 +212,54 @@ def process_image(num, test_img):
             # preprocess the image
             thresh = preprocess_image(normalized_image)
 
-            min_contour_area = 150  
-            max_contour_area = 1000  
-  
+            #min_contour_area = 150  
+            #max_contour_area = 1000  
+            
+            total_area = target_height * target_width
+            if total_area > 2100000:
+                min_contour_area = total_area * 0.0001
+                max_contour_area = total_area * 0.00035
+                #min_contour_area = 250
+                #max_contour_area = 600
+            elif 2000000 < total_area <= 2100000:
+                min_contour_area = total_area * 0.00010
+                max_contour_area = total_area * 0.00055
+            elif 1200000 < total_area <= 2000000:
+                if max_dimension > 1500:
+                    min_contour_area = total_area * 0.00023
+                    max_contour_area = total_area * 0.0008
+                else:
+                    min_contour_area = total_area * 0.00007
+                    max_contour_area = total_area * 0.0015
+            elif 800000 < total_area <= 1200000:
+                min_contour_area = total_area * 0.00027
+                max_contour_area = total_area * 0.0018 #0.0007
+            elif 400000 < total_area <= 800000:
+                min_contour_area = total_area * 0.00045  # was 0.0005
+                max_contour_area = total_area * 0.0022
+            elif 200000 < total_area <= 400000:
+                min_contour_area = total_area * 0.0006
+                max_contour_area = total_area * 0.0064
+            elif 100000 < total_area <= 200000:
+                min_contour_area = total_area * 0.0013
+                max_contour_area = total_area * 0.0030
+            else:  # total_area <= 100000
+                min_contour_area = total_area * 0.0015
+                max_contour_area = total_area * 0.00165
+
+            if avg_brightness < 70:
+                min_contour_area = total_area * 0.00005
+                max_contour_area = total_area * 0.00165
+            #elif avg_brightness > 100:
+             #   min_contour_area = 200
+              #  max_contour_area = 1500
+
+            print(total_area)
+            print(min_contour_area)
+            print(max_contour_area)
             filtered_contours, bounding_boxes = detect_and_filter_contours(thresh, min_contour_area, max_contour_area)
 
-            output_image = draw_contours(image_test, normalized_image, filtered_contours)
+            output_image = draw_contours(cropped_image, normalized_image, filtered_contours)
 
             if num == 1:
                 return output_image, len(filtered_contours)
@@ -179,6 +276,7 @@ def process_image(num, test_img):
             remapped_pred_label = []
             y_pred_confidence = []
 
+
             for i in range(num_images):
                 cropped_image = cropped_images[i]
                 cropped_image = np.expand_dims(cropped_image, axis=0)  
@@ -192,6 +290,7 @@ def process_image(num, test_img):
                 pred_label_i = np.argmax(y_class_pred_i, axis=1)
                 remapped_pred_label_i = [class_labels_pred[label] for label in pred_label_i]
 
+                
                 y_pred_confidence_i = np.asarray(list(map(lambda cat: np.max(cat), y_class_pred_i)))   
 
                 pred_label.append(pred_label_i)
@@ -207,8 +306,9 @@ def process_image(num, test_img):
             output_image = cv2.cvtColor(output_image, cv2.COLOR_BGR2RGB)  
             num_defect = 0
 
-            font_scale = 1   
-            thickness = 2
+            base_scale = min(width, height) / 1000.0
+            font_scale = base_scale   
+            thickness = int(base_scale * 4)  
 
             for contour, bbox, label, conf in zip(filtered_contours, bounding_boxes, remapped_pred_label, y_pred_confidence):
                 if label[0] == "none" :#or conf < 0.5:
@@ -217,15 +317,21 @@ def process_image(num, test_img):
                 class_label = f"{label[0]} {conf[0]:.2f}"
                 num_defect = num_defect + 1
                 margin = 10 
-    
-                cv2.rectangle(output_image, (x, y), (x + w, y + h), (255, 0, 0), 2)
+                x_new = x - (margin + pad_left)
+                y_new = y - (margin + pad_top)
+                w_new = w + margin
+                h_new = h + (margin+5)
+
+                cv2.rectangle(output_image, (x_new, y_new), (x_new + w_new, y_new + h_new), (255, 0, 0), 2)
 
                 text_size = cv2.getTextSize(class_label, cv2.FONT_HERSHEY_SIMPLEX, font_scale, thickness)[0]
                 text_bg_size = (text_size[0] + 10, text_size[1] + 10)
-                cv2.rectangle(output_image, (x, y + h), (x + text_bg_size[0], y + h + text_bg_size[1]), (255, 0, 0), -1) 
+
+                cv2.rectangle(output_image, (x_new, y_new + h_new), (x_new + text_bg_size[0], y_new + h_new + text_bg_size[1]), (255, 0, 0), -1) 
 
                 # putting text (class label) below the bounding box
-                cv2.putText(output_image, str(class_label), (x, y + h + text_size[1]), cv2.FONT_HERSHEY_SIMPLEX, font_scale, (255, 255, 255), thickness)
+                cv2.putText(output_image, str(class_label), (x_new, y_new + h_new + text_size[1]), cv2.FONT_HERSHEY_SIMPLEX, font_scale, (255, 255, 255), thickness)
+
 
             return output_image, num_defect
 
