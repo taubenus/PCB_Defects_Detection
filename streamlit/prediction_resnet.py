@@ -141,20 +141,6 @@ def process_image(num, test_img):
 
         if image_test is not None:
             crop_size = (100,100)
-
-            image_yuv = cv2.cvtColor(image_test, cv2.COLOR_BGR2YUV)
-            avg_brightness = np.mean(image_yuv[:, :, 0])
-            print("avg_brightness 1:", avg_brightness)
-            brightness_threshold = 65
-            if avg_brightness < brightness_threshold:
-                cliplimit = round(130 / avg_brightness, 1) #+ 0.2
-                print(cliplimit)
-                clahe = cv2.createCLAHE(clipLimit=cliplimit, tileGridSize=(10, 10))
-                image_yuv[:, :, 0] = clahe.apply(image_yuv[:, :, 0])
-                avg_brightness = np.mean(image_yuv[:, :, 0])
-                print("avg_brightness 2:", avg_brightness)
-
-            image_test = cv2.cvtColor(image_yuv, cv2.COLOR_YUV2BGR)
             #print(f"Original image size: {image_test.shape[:2]}")
             height, width = image_test.shape[:2]
             max_dimension = 1200
@@ -169,6 +155,20 @@ def process_image(num, test_img):
                 image_test = cv2.resize(image_test, new_dimensions, interpolation=cv2.INTER_AREA)
 
             height, width = image_test.shape[:2]
+
+            image_yuv = cv2.cvtColor(image_test, cv2.COLOR_BGR2YUV)
+            avg_brightness = np.mean(image_yuv[:, :, 0])
+            print("avg_brightness 1:", avg_brightness)
+            brightness_threshold = 65
+            if avg_brightness < brightness_threshold:
+                cliplimit = round(125 / avg_brightness, 1) #+ 0.2
+                print(cliplimit)
+                clahe = cv2.createCLAHE(clipLimit=cliplimit, tileGridSize=(10, 10))
+                image_yuv[:, :, 0] = clahe.apply(image_yuv[:, :, 0])
+                avg_brightness = np.mean(image_yuv[:, :, 0])
+                print("avg_brightness 2:", avg_brightness)
+
+            image_test = cv2.cvtColor(image_yuv, cv2.COLOR_YUV2BGR)
 
             target_height = round((height + 25) / 100) * 100
             target_width = round((width + 25) / 100) * 100
