@@ -320,9 +320,9 @@ elif page == pages[5]:
                     
                 st.session_state.unique_filename = unique_filename
             #if uploaded_selection is not None:
-                #test_options = [unique_filename]
-                #test_selection = test_options[0]
-                disp_test_selection = load_image(image_path)
+                test_options = [unique_filename]
+                test_selection = test_options[0]
+                disp_test_selection = load_image(test_selection)
                 st.image(disp_test_selection, caption="Selected Test Image", width=700)
 
         # on_click of predict button
