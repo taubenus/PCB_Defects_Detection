@@ -219,37 +219,45 @@ def process_image(num, test_img):
             if total_area > 2100000:
                 min_contour_area = total_area * 0.0001
                 max_contour_area = total_area * 0.00035
-                #min_contour_area = 250
-                #max_contour_area = 600
+                print("debug a")
             elif 2000000 < total_area <= 2100000:
                 min_contour_area = total_area * 0.00010
                 max_contour_area = total_area * 0.00055
+                print("debug b")
             elif 1200000 < total_area <= 2000000:
                 if max_dimension > 1500:
                     min_contour_area = total_area * 0.00023
                     max_contour_area = total_area * 0.0008
+                    print("debug c")
                 else:
                     min_contour_area = total_area * 0.00007
                     max_contour_area = total_area * 0.0015
+                    print("debug d")
             elif 800000 < total_area <= 1200000:
                 min_contour_area = total_area * 0.00027
                 max_contour_area = total_area * 0.0018 #0.0007
+                print("debug e")
             elif 400000 < total_area <= 800000:
                 min_contour_area = total_area * 0.00045  # was 0.0005
                 max_contour_area = total_area * 0.0022
+                print("debug f")
             elif 200000 < total_area <= 400000:
                 min_contour_area = total_area * 0.0006
                 max_contour_area = total_area * 0.0064
+                print("debug g")
             elif 100000 < total_area <= 200000:
                 min_contour_area = total_area * 0.0013
                 max_contour_area = total_area * 0.0030
+                print("debug h")
             else:  # total_area <= 100000
                 min_contour_area = total_area * 0.0015
                 max_contour_area = total_area * 0.00165
+                print("debug i")
 
             if avg_brightness < 70:
                 min_contour_area = total_area * 0.00005
                 max_contour_area = total_area * 0.00165
+                print("debug j")
             #elif avg_brightness > 100:
              #   min_contour_area = 200
               #  max_contour_area = 1500
