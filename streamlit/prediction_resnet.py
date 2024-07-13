@@ -235,7 +235,7 @@ def process_image(num, test_img):
                 min_contour_area = total_area * 0.00027
                 max_contour_area = total_area * 0.0018 #0.0007
             elif 400000 < total_area <= 800000:
-                min_contour_area = total_area * 0.00045  # was 0.0005
+                min_contour_area = total_area * 0.0004  # was 0.0005
                 max_contour_area = total_area * 0.0022
             elif 200000 < total_area <= 400000:
                 min_contour_area = total_area * 0.0006
