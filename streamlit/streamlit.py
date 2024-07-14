@@ -163,15 +163,15 @@ elif page == pages[2]:
         st.write("- Some defects can be cut into two parts during that process")
         st.write("- That would influence the model training")
 
-        image_8 = load_image('croppedimagewithmask.png')
-        st.image(image_8, caption="Cropping image and mask to 100x100 dimension", use_column_width='auto')
-
     with st.expander("Mask and Target Label"):
         st.write("- The dataset comes along with an xml file annotating for each image the bounding box of each defect and its type")
         st.write("- From the xml, for each image the pixel mask could be created with the same shape as the original image")
 
         image_6_2 = load_image('defect_img_vs_pm.png')
         st.image(image_6_2, caption="Original Image vs. Pixel Mask", use_column_width='auto')
+
+        image_8 = load_image('croppedimagewithmask.png')
+        st.image(image_8, caption="Cropping image and mask to 100x100 dimension", use_column_width='auto')
 
         st.write("- Those Pixel Masks will will become one of two labels for our model")
         st.write("- The second label will be the defect type")
@@ -190,51 +190,37 @@ elif page == pages[2]:
         image_10 = load_image('separated_img1.png')
         image_10 = image_10.resize((new_width, int((new_width / image_10.width) * image_10.height)))
         st.image(image_10, use_column_width='auto')
-        image_11 = load_image('separated_img2.png')
-        image_11 = image_10.resize((new_width, int((new_width / image_11.width) * image_11.height)))
-        st.image(image_11, use_column_width='auto')
         image_12 = load_image('separated_img3.png')
         image_12 = image_12.resize((new_width, int((new_width / image_12.width) * image_12.height)))
         st.image(image_12, caption="Manually implemented defect separation", use_column_width='auto')
     
 elif page == pages[3]:
-
+    local_css('expander_medium.css')
     st.write("# Model Training")
-    st.write("##### 1. VGG16")
-    st.write(
-"""The VGG16 model is a Convolutional Neural Network architecture that has been widely used for 
-image classification tasks.""")
+    st.write("We implemented and trained three different models. Only one is considered in more detail here: RES-UNET")
+    with st.expander("1 - VGG16"):
+        st.write("""The VGG16 model is a Convolutional Neural Network architecture that has been widely used for image classification tasks.""")
+        st.write(" **Observations**:")
+        st.write("- The resizing of images for VGG16 to 244,244 RGB dimensions causes alot of the features of the defects to be distorted")
+        st.write("- Unfortunately this model was unable to present reasonably good output results for our segmentation task")
+        st.write("- Hence we dropped any further training on this pre-trained model")
     
-    st.write(""" **Observations**:  
-             
-- The resizing of images for VGG16 to 244,244 RGB dimensions causes alot of the features of the defects to
-             be distorted. 
-- Unfortunately this model was unable to present reasonably good output results for our segmentation task. 
-- Hence we dropped any further training on this pre-trained model""")
-    
-    st.write("##### 2. RES-UNET")
+    with st.expander("2 - RES-UNET"):
+        st.write("For the development and implementation of our machine learning model, we went through many design iterations to finally decide on the RES-UNET model scheme.")
+        #image_13 = pdf2image.convert_from_bytes("pcb-resunet-model.pdf")
+        pdf_path = os.path.join(current_script_directory , 'figures', 'pcb-resunet-model.pdf')
+        pdf_bytes = open(pdf_path, "rb").read()
+        images = convert_from_bytes(pdf_bytes)
+        image_13 = images[0]
+        #image_13 = image_zoom(image_13, size=700, zoom_factor=2.5)
+        #image_13 = load_image('RESUNET_architecture.png')
+        st.image(image_13, caption="RES-UNET model with Segmentation and Classification outputs", use_column_width='auto')
 
-    st.write("""For the development and implementation of our machine learning model, we went through many 
-             design iterations to finally decide on the RES-UNET model scheme.""")
-    #image_13 = pdf2image.convert_from_bytes("pcb-resunet-model.pdf")
-    pdf_path = os.path.join(current_script_directory , 'figures', 'pcb-resunet-model.pdf')
-    pdf_bytes = open(pdf_path, "rb").read()
-    images = convert_from_bytes(pdf_bytes)
-    image_13 = images[0]
-    #image_13 = image_zoom(image_13, size=700, zoom_factor=2.5)
-    #image_13 = load_image('RESUNET_architecture.png')
-    st.image(image_13, caption="RES-UNET model with Segmentation and Classification outputs", use_column_width='auto')
-
-    st.write("##### 3. YOLOv5")
-
-    st.write("""In addition to designing and developing our RES_UNET model for training, we also successfully 
-             implemented the YOLOv5 object detection model developed by Ultralytics on the PCB datase """)
-    st.write("""This pre-trained model can be utilized for both segmentation and classification, providing us 
-             with the opportunity to compare the results of our model with this pretrained and well-established 
-             design.""")
-    
-    st.write("For more details on model architecture please go to:")
-    st.write("(https://docs.ultralytics.com/yolov5/tutorials/architecture_description/)")
+    with st.expander("3 - YOLOv5"):
+        st.write("In addition to designing and developing our RES_UNET model for training, we also successfully implemented the YOLOv5 object detection model developed by Ultralytics on the PCB datase")
+        st.write("This pre-trained model can be utilized for both segmentation and classification, providing us with the opportunity to compare the results of our model with this pretrained and well-established design.")
+        st.write("For more details on model architecture please go to:")
+        st.write("(https://docs.ultralytics.com/yolov5/tutorials/architecture_description/)")
 
 elif page == pages[4]:
     st.write("# Model Optimization and Evaluation")
