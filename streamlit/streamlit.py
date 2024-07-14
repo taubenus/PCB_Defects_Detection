@@ -3,6 +3,8 @@ import streamlit as st
 import os
 import cv2
 from PIL import Image
+import io
+import psutil
 import h5py
 import numpy as np
 import pandas as pd
@@ -11,7 +13,6 @@ import seaborn as sns
 from keras.models import load_model
 #from sklearn.metrics import classification_report
 from collections import Counter
-
 import time
 import pdf2image
 from pdf2image import convert_from_bytes
@@ -45,9 +46,6 @@ st.sidebar.header("Authors")
 st.sidebar.markdown("[*Faiza Waheed*](https://github.com/wfaiza/)")
 st.sidebar.markdown("[*Niels Hartanto*](https://github.com/taubenus/)")
 st.sidebar.markdown("[*Gernot Gellwitz*](https://github.com/Kathartikon/)")
-
-if 'unique_filename' not in st.session_state:
-    st.session_state.unique_filename = None
 
 @st.cache_data
 def local_css(file_name):
@@ -285,7 +283,10 @@ elif page == pages[5]:
     test_options = ["test_image_1.jpg", "test_image_2.jpg", "test_image_3.jpg",
                     "test_image_4.jpg", "test_image_5.jpg", "test_image_6.jpg",
                     "test_image_7.jpg", "test_image_8.jpg", "test_image_9.jpg"]
-    
+
+    if "uploaded_images" not in st.session_state:
+        st.session_state.uploaded_images = []
+	    
     tab1, tab2, tab3 = st.tabs(["Initialize Test Image", "Defect Detection", "Details"])
     uploaded_selection = None
     test_selection = None
@@ -306,21 +307,24 @@ elif page == pages[5]:
         else:
             uploaded_selection = st.file_uploader("Upload a PCB image",
                                                   type=['png', 'jpg', 'jpeg'], accept_multiple_files=False)
-            if "unique_filename" in st.session_state and st.session_state.unique_filename is not None:
-                uploaded_image_path = os.path.join(current_script_directory, 'figures', st.session_state.unique_filename)
-                remove_uploaded_image(uploaded_image_path)
-                st.session_state.unique_filename = None
+            #if uploaded_selection is not None:
+                #uploaded_image_path = os.path.join(current_script_directory, 'figures', st.session_state.unique_filename)
+                #remove_uploaded_image(uploaded_image_path)
+                #st.session_state.unique_filename = None
 
             if uploaded_selection is not None:
                 current_time = int(time.time())
                 unique_filename = f"{current_time}_{uploaded_selection.name}"
                 image_path = os.path.join(current_script_directory, 'figures', unique_filename)
                 with open(image_path, 'wb') as f:
-                    f.write(uploaded_selection.read())
-                    
+                    f.write(uploaded_selection.read())        
                 st.session_state.unique_filename = unique_filename
-            #if uploaded_selection is not None:
-                test_options = [unique_filename]
+
+		if len(st.session_state.uploaded_images) > 1:
+                    old_filename = st.session_state.uploaded_images.pop(0)
+                    old_image_path = os.path.join(current_script_directory, 'figures', old_filename)
+                    remove_uploaded_image(old_image_path)
+		test_options = [unique_filename]
                 test_selection = test_options[0]
                 disp_test_selection = load_image(test_selection)
                 st.image(disp_test_selection, caption="Selected Test Image", width=700)
