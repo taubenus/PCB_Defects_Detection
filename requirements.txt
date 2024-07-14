@@ -8,6 +8,7 @@ pandas
 pdf2image
 pillow
 pipreqs
+psutil
 requests
 scikit-learn
 seaborn
