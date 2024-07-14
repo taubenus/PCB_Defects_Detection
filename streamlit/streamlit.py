@@ -320,9 +320,9 @@ elif page == pages[5]:
                     f.write(uploaded_selection.read())
                     
                 st.session_state.unique_filename = unique_filename
-		st.session_state.uploaded_images.append(unique_filename)
+                st.session_state.uploaded_images.append(unique_filename)
 
-		if len(st.session_state.uploaded_images) > 1:
+                if len(st.session_state.uploaded_images) > 1:
                     old_filename = st.session_state.uploaded_images.pop(0)
                     old_image_path = os.path.join(current_script_directory, 'figures', old_filename)
                     remove_uploaded_image(old_image_path)
