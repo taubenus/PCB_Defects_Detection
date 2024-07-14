@@ -307,23 +307,27 @@ elif page == pages[5]:
         else:
             uploaded_selection = st.file_uploader("Upload a PCB image",
                                                   type=['png', 'jpg', 'jpeg'], accept_multiple_files=False)
-            #if uploaded_selection is not None:
-                #uploaded_image_path = os.path.join(current_script_directory, 'figures', st.session_state.unique_filename)
-                #remove_uploaded_image(uploaded_image_path)
-                #st.session_state.unique_filename = None
+            if "unique_filename" in st.session_state and st.session_state.unique_filename is not None:
+                uploaded_image_path = os.path.join(current_script_directory, 'figures', st.session_state.unique_filename)
+                remove_uploaded_image(uploaded_image_path)
+                st.session_state.unique_filename = None
 
             if uploaded_selection is not None:
                 current_time = int(time.time())
                 unique_filename = f"{current_time}_{uploaded_selection.name}"
                 image_path = os.path.join(current_script_directory, 'figures', unique_filename)
                 with open(image_path, 'wb') as f:
-                    f.write(uploaded_selection.read())        
+                    f.write(uploaded_selection.read())
+                    
                 st.session_state.unique_filename = unique_filename
+		st.session_state.uploaded_images.append(unique_filename)
 
-                if len(st.session_state.uploaded_images) > 1:
+		if len(st.session_state.uploaded_images) > 1:
                     old_filename = st.session_state.uploaded_images.pop(0)
                     old_image_path = os.path.join(current_script_directory, 'figures', old_filename)
                     remove_uploaded_image(old_image_path)
+		
+            #if uploaded_selection is not None:
                 test_options = [unique_filename]
                 test_selection = test_options[0]
                 disp_test_selection = load_image(test_selection)
