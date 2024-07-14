@@ -300,7 +300,7 @@ elif page == pages[5]:
             test_option = st.selectbox('Choose from different test samples', 
                                        options=(1, 2, 3, 4, 5, 6, 7, 8, 9)
             )
-            test_selection = test_options[test_option-1]
+            test_selection = os.path.join('test_images', test_options[test_option-1])
             disp_test_selection = load_image(test_selection)
             st.image(disp_test_selection, caption="Selected Test Image", width=700)
         
