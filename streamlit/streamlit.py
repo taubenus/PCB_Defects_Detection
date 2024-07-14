@@ -197,16 +197,8 @@ elif page == pages[2]:
 elif page == pages[3]:
     local_css('expander_medium.css')
     st.write("# Model Training")
-    st.write("We implemented and trained three different models. Only one is considered in more detail here: RES-UNET")
-    with st.expander("1 - VGG16"):
-        st.write("""The VGG16 model is a Convolutional Neural Network architecture that has been widely used for image classification tasks.""")
-        st.write(" **Observations**:")
-        st.write("- The resizing of images for VGG16 to 244,244 RGB dimensions causes alot of the features of the defects to be distorted")
-        st.write("- Unfortunately this model was unable to present reasonably good output results for our segmentation task")
-        st.write("- Hence we dropped any further training on this pre-trained model")
-    
-    with st.expander("2 - RES-UNET"):
-        st.write("For the development and implementation of our machine learning model, we went through many design iterations to finally decide on the RES-UNET model scheme.")
+    st.write("For the development and implementation of our machine learning model, we went through many design iterations to finally decide on the RES-UNET model scheme.")
+    with st.expander("1 - RES-UNET"):
         #image_13 = pdf2image.convert_from_bytes("pcb-resunet-model.pdf")
         pdf_path = os.path.join(current_script_directory , 'figures', 'pcb-resunet-model.pdf')
         pdf_bytes = open(pdf_path, "rb").read()
@@ -215,6 +207,14 @@ elif page == pages[3]:
         #image_13 = image_zoom(image_13, size=700, zoom_factor=2.5)
         #image_13 = load_image('RESUNET_architecture.png')
         st.image(image_13, caption="RES-UNET model with Segmentation and Classification outputs", use_column_width='auto')
+
+    local_css('expander_regular.css')
+    with st.expander("2 - VGG16"):
+        st.write("""The VGG16 model is a Convolutional Neural Network architecture that has been widely used for image classification tasks.""")
+        st.write(" **Observations**:")
+        st.write("- The resizing of images for VGG16 to 244,244 RGB dimensions causes alot of the features of the defects to be distorted")
+        st.write("- Unfortunately this model was unable to present reasonably good output results for our segmentation task")
+        st.write("- Hence we dropped any further training on this pre-trained model")
 
     with st.expander("3 - YOLOv5"):
         st.write("In addition to designing and developing our RES_UNET model for training, we also successfully implemented the YOLOv5 object detection model developed by Ultralytics on the PCB datase")
