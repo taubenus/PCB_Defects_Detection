@@ -320,11 +320,11 @@ elif page == pages[5]:
                     f.write(uploaded_selection.read())        
                 st.session_state.unique_filename = unique_filename
 
-		if len(st.session_state.uploaded_images) > 1:
+                if len(st.session_state.uploaded_images) > 1:
                     old_filename = st.session_state.uploaded_images.pop(0)
                     old_image_path = os.path.join(current_script_directory, 'figures', old_filename)
                     remove_uploaded_image(old_image_path)
-		test_options = [unique_filename]
+                test_options = [unique_filename]
                 test_selection = test_options[0]
                 disp_test_selection = load_image(test_selection)
                 st.image(disp_test_selection, caption="Selected Test Image", width=700)
