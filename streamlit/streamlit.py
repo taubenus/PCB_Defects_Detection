@@ -43,9 +43,9 @@ pages = ["Project Introduction", "Data Exploration", "Feature Engineering", "Mod
 page = st.sidebar.radio("Go to", pages)
 
 st.sidebar.header("Authors")
-st.sidebar.markdown("[*Faiza Waheed*](https://github.com/wfaiza/)")
-st.sidebar.markdown("[*Niels Hartanto*](https://github.com/taubenus/)")
-st.sidebar.markdown("[*Gernot Gellwitz*](https://github.com/Kathartikon/)")
+st.sidebar.markdown("[*Faiza Waheed*]")
+st.sidebar.markdown("[*Niels Hartanto*]")
+st.sidebar.markdown("[*Gernot Gellwitz*]")
 
 @st.cache_data
 def local_css(file_name):
