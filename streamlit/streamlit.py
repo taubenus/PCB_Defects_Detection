@@ -348,7 +348,5 @@ elif page == pages[5]:
                 st.write("Number of defects detected: ", num_defects)
                 st.success('Finished defects localisation and classification.')
 
-    with tab3:
-        st.write("**For more details, please goto the project Github Repository**")
-        st.write("(https://github.com/wfaiza/PCB_Defects_Detection/)")
+
         
