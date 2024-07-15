@@ -43,9 +43,9 @@ pages = ["Project Introduction", "Data Exploration", "Feature Engineering", "Mod
 page = st.sidebar.radio("Go to", pages)
 
 st.sidebar.header("Authors")
-st.sidebar.markdown("[*Faiza Waheed*]")
-st.sidebar.markdown("[*Niels Hartanto*]")
-st.sidebar.markdown("[*Gernot Gellwitz*]")
+st.sidebar.markdown("*Faiza Waheed*")
+st.sidebar.markdown("*Niels Hartanto*")
+st.sidebar.markdown("*Gernot Gellwitz*")
 
 @st.cache_data
 def local_css(file_name):
@@ -273,7 +273,7 @@ elif page == pages[5]:
     if "uploaded_images" not in st.session_state:
         st.session_state.uploaded_images = []
 	    
-    tab1, tab2, tab3 = st.tabs(["Initialize Test Image", "Defect Detection", "Details"])
+    tab1, tab2 = st.tabs(["Initialize Test Image", "Defect Detection"])
     uploaded_selection = None
     test_selection = None
     
