@@ -2,7 +2,7 @@ name: Multiple shells commands
 on:
   push:
     branches:
-      - "main"
+      - "workflows"
   pull_request:
     types: [closed, assigned, opened, reopened]
 jobs:
